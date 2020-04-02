@@ -16,7 +16,7 @@ class Welcome extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
-                Text('Device ID: ${user.id}'),
+                Text(user.toString()),
                 RaisedButton(
                   onPressed: () => user.create(),
                   child: Text('Join Now'),

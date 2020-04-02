@@ -11,21 +11,11 @@ class User with ChangeNotifier {
   int reputation;
 
   Status _status = Status.Uninitialized;
+
   Status get status => _status;
 
   @override
-  String toString() => '$id·$name: $_status\nKarma: $karma\nRep: $reputation';
-
-  Future<String> _getUniqueId() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isIOS) {
-      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-    } else {
-      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
-      return androidDeviceInfo.androidId; // unique ID on Android
-    }
-  }
+  String toString() => 'ID: $id\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
 
   User._() {
     try {
@@ -74,5 +64,16 @@ class User with ChangeNotifier {
 
     _status = Status.Authenticated;
     notifyListeners();
+  }
+
+  Future<String> _getUniqueId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
   }
 }
