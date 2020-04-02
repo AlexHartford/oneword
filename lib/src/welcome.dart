@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:oneword/src/state/user.dart';
 import 'package:provider/provider.dart';
+
+import 'package:oneword/src/state/user.dart';
+import 'package:oneword/src/tos.dart';
+
+enum Tabs { ToS, PP }
 
 class Welcome extends StatelessWidget {
   static const route = '/welcome';
@@ -32,16 +36,14 @@ class Welcome extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: OutlineButton(
-//                      padding: EdgeInsets.only(left: 32.0, right: 32.0),
-                        onPressed: () {  },
+                        onPressed: () => Navigator.pushNamed(context, Tos.route, arguments: Tabs.ToS.index),
                         child: Text('Terms of Service'),
                       ),
                     ),
                     SizedBox(width: 16.0),
                     Expanded(
                       child: OutlineButton(
-//                      padding: EdgeInsets.only(left: 32.0, right: 32.0),
-                        onPressed: () {  },
+                        onPressed: () => Navigator.pushNamed(context, Tos.route, arguments: Tabs.PP.index),
                         child: Text('Privacy Policy'),
                       ),
                     )

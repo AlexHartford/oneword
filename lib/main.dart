@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -25,6 +26,7 @@ class App extends StatelessWidget {
             textTheme: ButtonTextTheme.primary
           )
         ),
+        onGenerateRoute: Router().generateRoute,
         home: Landing()
       )
     );

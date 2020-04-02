@@ -8,7 +8,7 @@ import 'package:oneword/src/welcome.dart';
 import 'package:oneword/src/splash.dart';
 
 class Landing extends StatelessWidget {
-  static const routeName = '/';
+  static const route = '/';
 
   Widget redirect(context, User user, _) {
     switch (user.status) {
