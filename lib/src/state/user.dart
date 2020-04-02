@@ -1,33 +1,41 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:device_info/device_info.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
 
 class User with ChangeNotifier {
-  final String id;
+  String id;
   String name;
   int karma;
   int reputation;
 
   Status _status = Status.Uninitialized;
+
   Status get status => _status;
 
   @override
-  String toString() => '$id·$name: $_status\nKarma: $karma\nRep: $reputation';
+  String toString() => 'ID: $id\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
 
-  // Attempt to get from DB, else create
-  User(this.id) {
+  User._() {
     try {
       retrieve();
     } catch (e) {
       _status = Status.Error;
     }
+    _instance = this;
   }
+
+  static User _instance;
+
+  static User get instance => _instance ?? User._();
 
   Future<void> retrieve() async {
     _status = Status.Authenticating;
     notifyListeners();
 
     await Future.delayed(const Duration(seconds : 2));
+    this.id = await _getUniqueId();
 
     // Found in DB, set fields
     if (this.id == '123') {
@@ -56,5 +64,16 @@ class User with ChangeNotifier {
 
     _status = Status.Authenticated;
     notifyListeners();
+  }
+
+  Future<String> _getUniqueId() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else {
+      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId; // unique ID on Android
+    }
   }
 }

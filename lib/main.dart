@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
 import 'package:oneword/src/landing.dart';
 
-void main() {
+void main() async {
   runApp(App());
-}
-
-String getUniqueId() {
-  return '123';
 }
 
 class App extends StatelessWidget {
@@ -17,14 +14,19 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => User(getUniqueId())),
+        ChangeNotifierProvider(create: (_) => User.instance),
       ],
       child: MaterialApp(
         title: 'oneword',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          accentColor: Colors.blueAccent
+          accentColor: Colors.blueAccent,
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.blue,
+            textTheme: ButtonTextTheme.primary
+          )
         ),
+        onGenerateRoute: Router().generateRoute,
         home: Landing()
       )
     );
