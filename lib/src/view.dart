@@ -23,7 +23,7 @@ class View extends HookWidget {
   final _items = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
       title: Text('Home'),
-      icon: Icon(Icons.home)),
+      icon: Icon(Icons.import_export)),
     BottomNavigationBarItem(
       title: Text('Search'),
       icon: Icon(Icons.search)),
