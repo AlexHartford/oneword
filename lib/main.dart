@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           accentColor: Colors.blueAccent,
-          scaffoldBackgroundColor: Colors.white70,
+//          scaffoldBackgroundColor: Colors.white70,
           buttonTheme: ButtonThemeData(
             buttonColor: Colors.blue,
             textTheme: ButtonTextTheme.primary

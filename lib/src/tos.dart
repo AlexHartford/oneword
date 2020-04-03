@@ -16,7 +16,7 @@ class Tos extends StatelessWidget {
             title: Text('Legal'),
             bottom: TabBar(
               tabs: [
-                Tab(key: PageStorageKey('Terms'), text: 'Terms and Conditions'),
+                Tab(key: PageStorageKey('Terms'), text: 'Terms of Service'),
                 Tab(key: PageStorageKey('Privacy'), text: 'Privacy Policy'),
               ],
             ),

@@ -11,7 +11,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    print(user.toString());
 
     return Scaffold(
       appBar: AppBar(
