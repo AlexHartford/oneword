@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oneword/src/home.dart';
+import 'package:oneword/src/tabs/home/view.dart';
 import 'package:oneword/src/landing.dart';
 import 'package:oneword/src/tos.dart';
 

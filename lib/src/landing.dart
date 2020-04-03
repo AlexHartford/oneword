@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
 
-import 'package:oneword/src/home.dart';
+import 'package:oneword/src/view.dart';
 import 'package:oneword/src/welcome.dart';
 import 'package:oneword/src/splash.dart';
 
@@ -13,7 +13,7 @@ class Landing extends StatelessWidget {
   Widget redirect(context, User user, _) {
     switch (user.status) {
       case Status.Authenticated:
-        return Home();
+        return View();
       case Status.New:
         return Welcome();
       case Status.Error:
