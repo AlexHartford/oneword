@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'kebab.dart';
+import 'package:oneword/src/tabs/home/kebab.dart';
 
 class Content extends StatelessWidget {
   Content({Key key}) : super(key: key);

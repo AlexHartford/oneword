@@ -18,14 +18,20 @@ class Votes extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        FlatButton(
-          child: const Icon(Icons.arrow_upward),
-          onPressed: () {},
+        InkWell(
+          child: const Icon(
+            Icons.arrow_upward,
+            color: Colors.grey
+          ),
+          onTap: () {}
         ),
         Text('69'),
-        FlatButton(
-          child: const Icon(Icons.arrow_downward),
-          onPressed: () {},
+        InkWell(
+          child: const Icon(
+            Icons.arrow_downward,
+            color: Colors.grey
+          ),
+          onTap: () {},
         ),
       ],
     );
@@ -39,7 +45,8 @@ class Comment extends StatelessWidget {
       child: Row(
         children: <Widget>[
           const Icon(Icons.comment),
-          const Text(' 420')
+          SizedBox(width: 5),
+          const Text('420')
         ],
       ),
       onPressed: () {},
