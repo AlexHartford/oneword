@@ -46,12 +46,7 @@ class Votes extends HookWidget {
           ),
           onPressed: () => handleVote(Vote.up),
         ),
-        Text(
-          score.value.toString(),
-          style: TextStyle(
-            fontWeight: FontWeight.bold
-          ),
-        ),
+        Text(score.value.toString()),
         IconButton(
           icon: Icon(
             FontAwesomeIcons.arrowAltCircleDown,
@@ -64,18 +59,24 @@ class Votes extends HookWidget {
   }
 }
 
-class Comment extends StatelessWidget {
+class Comment extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    final commentCount = useState(420);
+
+    return InkResponse(
+      borderRadius: BorderRadius.circular(25),
       child: Row(
         children: <Widget>[
-          const Icon(Icons.comment),
+          const Icon(
+            Icons.comment,
+            color: Colors.blue,
+          ),
           SizedBox(width: 5),
-          const Text('420')
+          Text(commentCount.value.toString())
         ],
       ),
-      onPressed: () {},
+      onTap: () {},
     );
   }
 }
@@ -83,8 +84,9 @@ class Comment extends StatelessWidget {
 class Share extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      child: const Icon(Icons.share),
+    return IconButton(
+      icon: const Icon(Icons.share),
+      color: Colors.blue,
       onPressed: () {},
     );
   }

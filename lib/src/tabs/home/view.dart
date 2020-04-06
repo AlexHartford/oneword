@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:oneword/src/tabs/home/post.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:oneword/src/state/user.dart';
+
+import 'package:oneword/src/tabs/home/post.dart';
 
 class Home extends StatelessWidget {
   static const route = '/home';
@@ -23,7 +25,7 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.only(right: 16.0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.arrow_upward),
+                  Icon(FontAwesomeIcons.bolt),
                   Text(
                     '${user.karma}',
                     style: TextStyle(
