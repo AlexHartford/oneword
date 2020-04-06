@@ -9,14 +9,17 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 1.0),
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            Content(),
-            Buttons()
-          ],
+    return Transform.scale(
+      scale: 1.05,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              Content(),
+              Buttons()
+            ],
+          ),
         ),
       ),
     );

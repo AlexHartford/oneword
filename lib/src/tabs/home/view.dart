@@ -40,6 +40,7 @@ class Home extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          SizedBox(height: 4.0),
           Post(),
           Post(),
           Post(),
