@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Buttons extends StatelessWidget {
   @override
@@ -13,25 +15,49 @@ class Buttons extends StatelessWidget {
   }
 }
 
-class Votes extends StatelessWidget {
+enum Vote { up, down, none}
+
+class Votes extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final vote = useState(Vote.none);
+    final score = useState(69);
+
+    handleVote(Vote type) {
+      if (type == Vote.up) {
+        if (vote.value == Vote.down) score.value++;
+        vote.value == Vote.up ? score.value-- : score.value++;
+        vote.value = vote.value == Vote.up ? Vote.none : Vote.up;
+      }
+
+      if (type == Vote.down) {
+        if (vote.value == Vote.up) score.value--;
+        vote.value == Vote.down ? score.value++ : score.value--;
+        vote.value = vote.value == Vote.down ? Vote.none : Vote.down;
+      }
+    }
+
     return Row(
       children: <Widget>[
-        InkWell(
-          child: const Icon(
-            Icons.arrow_upward,
-            color: Colors.grey
+        IconButton(
+          icon: Icon(
+            FontAwesomeIcons.arrowAltCircleUp,
+            color: vote.value == Vote.up ? Colors.blue : Colors.grey,
           ),
-          onTap: () {}
+          onPressed: () => handleVote(Vote.up),
         ),
-        Text('69'),
-        InkWell(
-          child: const Icon(
-            Icons.arrow_downward,
-            color: Colors.grey
+        Text(
+          score.value.toString(),
+          style: TextStyle(
+            fontWeight: FontWeight.bold
           ),
-          onTap: () {},
+        ),
+        IconButton(
+          icon: Icon(
+            FontAwesomeIcons.arrowAltCircleDown,
+            color: vote.value == Vote.down ? Colors.blue : Colors.grey,
+          ),
+          onPressed: () => handleVote(Vote.down),
         ),
       ],
     );
