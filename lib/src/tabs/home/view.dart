@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:oneword/src/state/user.dart';
+
+import 'package:oneword/src/tabs/home/post.dart';
 
 class Home extends StatelessWidget {
   static const route = '/home';
@@ -14,22 +17,37 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text('Nearby'),
+        centerTitle: true,
         actions: <Widget>[
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                'Karma: ${user.karma}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
-                ),
+              child: Row(
+                children: <Widget>[
+                  Icon(FontAwesomeIcons.bolt),
+                  Text(
+                    '${user.karma}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16
+                    ),
+                  ),
+                ],
               ),
           ))
         ],
       ),
-      body: Column(
-
+      body: ListView(
+        children: <Widget>[
+          SizedBox(height: 4.0),
+          Post(),
+          Post(),
+          Post(),
+          Post(),
+          Post(),
+          Post()
+        ],
       )
     );
   }

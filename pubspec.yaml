@@ -28,6 +28,7 @@ dependencies:
   flutter_hooks: ^0.8.0
   http: ^0.12.0+4
   device_info: ^0.4.2+1
+  font_awesome_flutter: ^8.8.1
 
 dev_dependencies:
   flutter_test:
