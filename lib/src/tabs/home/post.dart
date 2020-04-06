@@ -12,6 +12,7 @@ class Post extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Card(
         margin: const EdgeInsets.all(0),
+        elevation: 2.5,
         shape: Border(),
         child: Column(
           children: <Widget>[
