@@ -55,7 +55,7 @@ class User with ChangeNotifier {
     _status = Status.Authenticating;
     notifyListeners();
 
-    await Future.delayed(const Duration(seconds : 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     // Not found in DB, create new user
     this.name = 'Dull Cat';

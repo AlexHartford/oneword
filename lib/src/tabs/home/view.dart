@@ -11,6 +11,11 @@ class Home extends StatelessWidget {
 
   Home({Key key}) : super(key: key);
 
+  Future<bool> refresh() async {
+    await Future.delayed(const Duration(seconds: 2));
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -38,16 +43,20 @@ class Home extends StatelessWidget {
           ))
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(height: 4.0),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post(),
-          Post()
-        ],
+      body: RefreshIndicator(
+        onRefresh: this.refresh,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: <Widget>[
+            SizedBox(height: 4.0),
+            Post(),
+            Post(),
+            Post(),
+            Post(),
+            Post(),
+            Post()
+          ],
+        ),
       )
     );
   }
