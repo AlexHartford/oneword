@@ -18,17 +18,20 @@ class Contact extends StatelessWidget {
       shape: Border(),
       child: InkWell(
         onTap: () => this.openConversation('Sexual Harassment Panda', context),
-        child: Flex(direction: Axis.horizontal, children: <Widget>[
-          Flexible(
-            child: ListTile(
-              title: Text('Sexual Harassment Panda'),
-              subtitle: Text(
-                'This text is long so it should get cut off after a certain amount of characters',
-                overflow: TextOverflow.ellipsis),
-              trailing: Timer(),
+        child: Flex(
+          direction: Axis.horizontal,
+          children: <Widget>[
+            Flexible(
+              child: ListTile(
+                title: Text('Sexual Harassment Panda'),
+                subtitle: Text(
+                  'This text is long so it should get cut off after a certain amount of characters',
+                  overflow: TextOverflow.ellipsis),
+                trailing: Timer(),
+              ),
             ),
-          ),
-        ]),
+          ]
+        ),
       )
     );
   }

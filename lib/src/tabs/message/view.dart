@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:oneword/src/tabs/message/contact.dart';
+import 'package:oneword/src/tabs/message/text_divider.dart';
 
 class Message extends StatelessWidget {
   Message({Key key}) : super(key: key);
@@ -21,10 +23,12 @@ class Message extends StatelessWidget {
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: <Widget>[
+            TextDivider(text: 'Chat Requests'),
             Contact(),
             Contact(),
             Contact(),
             Contact(),
+            TextDivider(text: 'Active Chats'),
             Contact(),
             Contact(),
             Contact(),
