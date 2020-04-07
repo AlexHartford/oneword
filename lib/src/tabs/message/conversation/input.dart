@@ -10,7 +10,6 @@ class Input extends HookWidget {
 
     return Container(
       padding: const EdgeInsets.all(8.0),
-      color: Colors.white,
       child: TextFormField(
         controller: _controller,
         decoration: InputDecoration(

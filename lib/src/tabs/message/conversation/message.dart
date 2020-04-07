@@ -1,20 +1,90 @@
 import 'package:flutter/material.dart';
 
 class Message extends StatelessWidget {
-  final bool self;
+  final String message, time;
+  final bool delivered, self;
 
-  Message({Key key, this.self = false}) : super(key: key);
+  Message({
+    Key key,
+    this.message,
+    this.time,
+    this.delivered = false,
+    this.self = false
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      children: <Widget>[
-        Container(
-          color: self ? Colors.blue.withOpacity(0.25) : Colors.grey.withOpacity(0.25),
-          padding: EdgeInsets.all(8.0),
-          child: Text('Hello darkness my old friend.  I\'ve come to talk with you again.'),
-        )
-      ],
+    final color = this.self ? Colors.blueGrey.shade50 : Colors.blue.shade700;
+    final textColor = this.self ? Colors.black : Colors.white;
+    final align = this.self ? CrossAxisAlignment.start : CrossAxisAlignment.end;
+    final icon = delivered ? Icons.done_all : Icons.done;
+    final radius = this.self
+        ? BorderRadius.only(
+            topRight: Radius.circular(5.0),
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(5.0),
+          )
+        : BorderRadius.only(
+            topLeft: Radius.circular(5.0),
+            bottomLeft: Radius.circular(5.0),
+            bottomRight: Radius.circular(10.0),
+          );
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Column(
+        crossAxisAlignment: align,
+        children: <Widget>[
+          Container(
+            margin: const EdgeInsets.all(3.0),
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: .5,
+                    spreadRadius: 1.0,
+                    color: Colors.black.withOpacity(.12))
+              ],
+              color: color,
+              borderRadius: radius,
+            ),
+            child: Stack(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 48.0),
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                      color: textColor
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  right: 0.0,
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        time,
+                        style: TextStyle(
+                          color: Colors.black38,
+                          fontSize: 10.0,
+                        )
+                      ),
+                      SizedBox(width: 3.0),
+                      Icon(
+                        icon,
+                        size: 12.0,
+                        color: Colors.black38,
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

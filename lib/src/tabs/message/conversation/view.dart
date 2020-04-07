@@ -13,23 +13,38 @@ class Conversation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(this.name),
-      ),
-      body: Stack(
-        children: <Widget>[
-          ListView.builder(
-            controller: this._controller,
-            shrinkWrap: true,
-            reverse: true,
-            itemBuilder: (context, index) => Message(self: index.isEven),
-            itemCount: 20,
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Input()
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.more_vert
+            ),
+            onPressed: () {},
           )
         ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                controller: this._controller,
+                shrinkWrap: true,
+                reverse: true,
+                itemBuilder: (context, index) => Message(
+                    self: index.isEven,
+                    message: '${index.toString()}: Test text ${index % 3 == 0 ? 'longer longer longer' : ''} message.  Tiger King Tiger King',
+                    time: '${DateTime.now().toLocal().hour.toString()}: ${DateTime.now().toLocal().minute}'
+                ),
+                itemCount: 20,
+              ),
+            ),
+            Align(alignment: Alignment.bottomCenter, child: Input())
+          ],
+        ),
       )
     );
   }
