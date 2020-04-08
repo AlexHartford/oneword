@@ -1,12 +1,16 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:oneword/src/tabs/account/view.dart';
+
+import 'package:oneword/src/state/feed.dart';
+
+import 'package:oneword/src/tabs/post/button.dart';
+import 'package:oneword/src/tabs/post/text.dart';
 
 import 'package:oneword/src/tabs/home/view.dart';
 import 'package:oneword/src/tabs/message/view.dart';
-import 'package:oneword/src/tabs/post/view.dart';
 import 'package:oneword/src/tabs/search/view.dart';
+import 'package:oneword/src/tabs/account/view.dart';
 
 class View extends HookWidget {
 
@@ -15,7 +19,8 @@ class View extends HookWidget {
   final _widgetOptions = <Widget>[
     Home(key: PageStorageKey('Home')),
     Search(key: PageStorageKey('Search')),
-    Post(key: PageStorageKey('Post')),
+    // TODO: If you miss the raised button, this route gets hit.  FIX
+    TextPost(),
     Message(key: PageStorageKey('Message')),
     Account(key: PageStorageKey('Account'))
   ];
@@ -29,13 +34,7 @@ class View extends HookWidget {
       icon: Icon(Icons.search)),
     BottomNavigationBarItem(
       title: Text('Post'),
-      icon: RaisedButton(
-        shape: CircleBorder(),
-        elevation: 1,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        child: Icon(Icons.create),
-        onPressed: () {},
-      )
+      icon: PostButton()
     ),
     BottomNavigationBarItem(
       title: Text('Message'),

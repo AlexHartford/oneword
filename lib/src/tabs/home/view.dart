@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:oneword/src/state/user.dart';
+import 'package:oneword/src/state/feed.dart';
 
 import 'package:oneword/src/tabs/home/post.dart';
 
@@ -11,14 +12,14 @@ class Home extends StatelessWidget {
 
   Home({Key key}) : super(key: key);
 
-  Future<bool> refresh() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    final feed = Provider.of<Feed>(context);
+
+    Future<bool> _refresh() async {
+      return feed.update();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -44,17 +45,12 @@ class Home extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: this.refresh,
+        onRefresh: _refresh,
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: <Widget>[
             SizedBox(height: 4.0),
-            Post(),
-            Post(),
-            Post(),
-            Post(),
-            Post(),
-            Post()
+            Post(username: 'test', time: 'now', content: 'hello world'),
           ],
         ),
       )

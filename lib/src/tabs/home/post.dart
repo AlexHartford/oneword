@@ -4,7 +4,9 @@ import 'package:oneword/src/tabs/home/buttons.dart';
 import 'package:oneword/src/tabs/home/content.dart';
 
 class Post extends StatelessWidget {
-  Post({Key key}) : super(key: key);
+  final String username, time, content;
+
+  Post({Key key, this.username, this.time, this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,11 @@ class Post extends StatelessWidget {
         shape: Border(),
         child: Column(
           children: <Widget>[
-            Content(),
+            Content(
+              username: this.username,
+              time: this.time,
+              content: this.content
+            ),
             Buttons()
           ],
         ),
