@@ -18,7 +18,15 @@ class Home extends StatelessWidget {
     final feed = Provider.of<Feed>(context);
 
     Future<bool> _refresh() async {
-      return feed.update();
+      return feed.refresh();
+    }
+
+    Post _mapPost(FeedItem post) {
+      return Post(username: post.username, time: post.time, content: post.content);
+    }
+
+    _buildFeed() {
+      return feed.posts.reversed.map((post) => _mapPost(post)).toList();
     }
 
     return Scaffold(
@@ -48,10 +56,7 @@ class Home extends StatelessWidget {
         onRefresh: _refresh,
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          children: <Widget>[
-            SizedBox(height: 4.0),
-            Post(username: 'test', time: 'now', content: 'hello world'),
-          ],
+          children: _buildFeed(),
         ),
       )
     );

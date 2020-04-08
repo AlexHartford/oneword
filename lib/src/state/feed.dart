@@ -13,7 +13,9 @@ class Feed with ChangeNotifier {
 
   List<FeedItem> get posts => _feed;
 
-  Future<bool> addTextPost(String content) {
+  Future<bool> addTextPost(String content) async {
+    await Future.delayed(Duration(seconds: 1));
+
     _feed.add(
       FeedItem(
         userId: User.instance.id,
@@ -24,29 +26,38 @@ class Feed with ChangeNotifier {
       )
     );
     notifyListeners();
-    return Future.delayed(Duration(seconds: 2));
+    return true;
   }
 
-  Future<bool> addPost(FeedItem post) {
+  Future<bool> addPost(FeedItem post) async {
+    await Future.delayed(Duration(seconds: 2));
     _feed.add(post);
     notifyListeners();
-    return Future.delayed(Duration(seconds: 2));
+    return true;
   }
 
-  Future<bool> removePost(FeedItem post) {
+  Future<bool> removePost(FeedItem post) async {
+    await Future.delayed(Duration(seconds: 2));
     _feed.remove(post);
     notifyListeners();
-    return Future.delayed(Duration(seconds: 2));
+    return true;
   }
 
   // This should be called whenever there are updates for the user's feed
   // Then, when the user refreshes, we can serve new content immediately
-  Future<bool> update() {
-    _feed.removeAt(0);
+  Future<bool> update() async {
+    await Future.delayed(Duration(seconds: 2));
+    _feed.add(FeedItem(userId: '123', username: 'Bill Gates', content: 'update', time: 'time', score: 1));
+    _feed.add(FeedItem(userId: '456', username: 'Bill', content: 'update', time: 'time', score: 2));
+    return true;
+  }
+
+  Future<bool> refresh() async {
+    await Future.delayed(Duration(seconds: 2));
     _feed.add(FeedItem(userId: '123', username: 'Donald Trump', content: 'update', time: 'time', score: 1));
     _feed.add(FeedItem(userId: '456', username: 'Donald Duck', content: 'update', time: 'time', score: 2));
-//    notifyListeners();
-    return Future.delayed(Duration(seconds: 2));
+    notifyListeners();
+    return true;
   }
 }
 
