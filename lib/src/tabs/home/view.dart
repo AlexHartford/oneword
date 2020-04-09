@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nearby'),
+        title: Text(feed.name),
         centerTitle: true,
         actions: <Widget>[
           Center(

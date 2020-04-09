@@ -3,11 +3,13 @@ import 'package:oneword/src/state/user.dart';
 import 'package:uuid/uuid.dart';
 
 class Feed with ChangeNotifier {
+  final String name;
+
   FeedItem mock = FeedItem(userId: '0', username: 'Banana Polisher', content: 'mock', time: 'now', score: 69);
 
   List<FeedItem> _feed = List<FeedItem>();
 
-  Feed() {
+  Feed({this.name = 'Nearby'}) {
     _feed.add(mock);
   }
 
