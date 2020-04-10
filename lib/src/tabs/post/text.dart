@@ -11,7 +11,7 @@ class TextPost extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final feed = Provider.of<Feed>(context);
+    final feed = Provider.of<FeedState>(context);
 
     final _controller = useTextEditingController();
 

@@ -17,8 +17,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => User.instance),
-        ChangeNotifierProvider(create: (_) => Feed()),
+        ChangeNotifierProvider(create: (_) => UserState.instance),
+        ChangeNotifierProvider(create: (_) => FeedState()),
       ],
       child: MaterialApp(
         title: 'oneword',

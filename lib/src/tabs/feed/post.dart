@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:oneword/src/tabs/home/buttons.dart';
-import 'package:oneword/src/tabs/home/content.dart';
+import 'package:oneword/src/state/post.dart';
+
+import 'package:oneword/src/tabs/feed/buttons.dart';
+import 'package:oneword/src/tabs/feed/content.dart';
 
 class Post extends StatelessWidget {
-  final String username, time, content;
+  final PostModel post;
 
-  Post({Key key, this.username, this.time, this.content}) : super(key: key);
+  Post({Key key, this.post}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +21,13 @@ class Post extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Content(
-              username: this.username,
-              time: this.time,
-              content: this.content
+              username: this.post.username,
+              time: this.post.time,
+              content: this.post.content
             ),
-            Buttons()
+            Buttons(
+              post: this.post,
+            )
           ],
         ),
       ),

@@ -8,7 +8,7 @@ class Account extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user =  Provider.of<User>(context);
+    final user =  Provider.of<UserState>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Account'),

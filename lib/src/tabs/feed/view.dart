@@ -3,26 +3,27 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:oneword/src/state/user.dart';
+import 'package:oneword/src/state/post.dart';
 import 'package:oneword/src/state/feed.dart';
 
-import 'package:oneword/src/tabs/home/post.dart';
+import 'package:oneword/src/tabs/feed/post.dart';
 
-class Home extends StatelessWidget {
+class Feed extends StatelessWidget {
   static const route = '/home';
 
-  Home({Key key}) : super(key: key);
+  Feed({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    final feed = Provider.of<Feed>(context);
+    final user = Provider.of<UserState>(context);
+    final feed = Provider.of<FeedState>(context);
 
     Future<bool> _refresh() async {
       return feed.refresh();
     }
 
-    Post _mapPost(FeedItem post) {
-      return Post(username: post.username, time: post.time, content: post.content);
+    Post _mapPost(PostModel post) {
+      return Post(key: UniqueKey(), post: post);
     }
 
     _buildFeed() {
