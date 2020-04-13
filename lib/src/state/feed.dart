@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:oneword/src/state/post.dart';
 import 'package:oneword/src/state/user.dart';
@@ -22,7 +23,7 @@ class FeedState with ChangeNotifier {
         userId: UserState.instance.id,
         username: UserState.instance.name,
         content: content,
-        time: '${DateTime.now().hour}: ${DateTime.now().minute}',
+        time: DateFormat('h:mm a').format(DateTime.now()),
         score: 1
       )
     );
