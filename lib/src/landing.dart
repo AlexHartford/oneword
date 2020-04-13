@@ -10,7 +10,7 @@ import 'package:oneword/src/splash.dart';
 class Landing extends StatelessWidget {
   static const route = '/';
 
-  Widget redirect(context, User user, _) {
+  Widget redirect(context, UserState user, _) {
     switch (user.status) {
       case Status.Authenticated:
         return View();

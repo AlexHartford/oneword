@@ -11,8 +11,7 @@ class Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    print(user.toString());
+    final user = Provider.of<UserState>(context);
 
     return Scaffold(
       body: SafeArea(

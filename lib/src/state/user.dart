@@ -1,14 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
+import 'package:oneword/src/state/post.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
 
-class User with ChangeNotifier {
+class UserState with ChangeNotifier {
   String id;
   String name;
   int karma;
   int reputation;
+
+  Map<String, Direction> votes = Map();
 
   Status _status = Status.Uninitialized;
 
@@ -17,7 +20,7 @@ class User with ChangeNotifier {
   @override
   String toString() => 'ID: $id\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
 
-  User._() {
+  UserState._() {
     try {
       retrieve();
     } catch (e) {
@@ -26,9 +29,9 @@ class User with ChangeNotifier {
     _instance = this;
   }
 
-  static User _instance;
+  static UserState _instance;
 
-  static User get instance => _instance ?? User._();
+  static UserState get instance => _instance ?? UserState._();
 
   Future<void> retrieve() async {
     _status = Status.Authenticating;
@@ -64,6 +67,16 @@ class User with ChangeNotifier {
 
     _status = Status.Authenticated;
     notifyListeners();
+  }
+
+  addVote(String postId, Direction dir, {bool notify = false}) {
+    votes[postId] == dir ? votes[postId] = Direction.None : votes[postId] = dir;
+    // Fire and forget API call to user service
+    if (notify) notifyListeners();
+  }
+
+  Direction getDirectionForPost(String postId) {
+    return votes[postId] ?? Direction.None;
   }
 
   Future<String> _getUniqueId() async {

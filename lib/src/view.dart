@@ -1,67 +1,102 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+import 'package:oneword/src/tabs/post/text.dart';
+import 'package:oneword/src/tabs/feed/view.dart';
+import 'package:oneword/src/tabs/message/view.dart';
+import 'package:oneword/src/tabs/search/view.dart';
 import 'package:oneword/src/tabs/account/view.dart';
 
-import 'package:oneword/src/tabs/home/view.dart';
-import 'package:oneword/src/tabs/message/view.dart';
-import 'package:oneword/src/tabs/post/view.dart';
-import 'package:oneword/src/tabs/search/view.dart';
+enum Tab { Feed, Search, Message, Account }
 
 class View extends HookWidget {
 
   View({Key key}) : super(key: key);
 
-  final _widgetOptions = <Widget>[
-    Home(key: PageStorageKey('Home')),
-    Search(key: PageStorageKey('Search')),
-    Post(key: PageStorageKey('Post')),
-    Message(key: PageStorageKey('Message')),
-    Account(key: PageStorageKey('Account'))
-  ];
-
-  final _items = <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      title: Text('Home'),
-      icon: Icon(Icons.import_export)),
-    BottomNavigationBarItem(
-      title: Text('Search'),
-      icon: Icon(Icons.search)),
-    BottomNavigationBarItem(
-      title: Text('Post'),
-      icon: RaisedButton(
-        shape: CircleBorder(),
-        elevation: 1,
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        child: Icon(Icons.create),
-        onPressed: () {},
-      )
-    ),
-    BottomNavigationBarItem(
-      title: Text('Message'),
-      icon: Icon(Icons.message)),
-    BottomNavigationBarItem(
-      title: Text('Account'),
-      icon: Icon(Icons.account_circle))
-  ];
+  final _tabs = <Tab, Widget> {
+    Tab.Feed: Feed(key: PageStorageKey('Feed')),
+    Tab.Search: Search(key: PageStorageKey('Search')),
+    Tab.Message: Message(key: PageStorageKey('Message')),
+    Tab.Account: Account(key: PageStorageKey('Account'))
+  };
 
   @override
   Widget build(BuildContext context) {
-    final _selected = useState(0);
+    final _tab = useState(Tab.Feed);
 
     return Scaffold(
-      body: Center(child: _widgetOptions.elementAt(_selected.value)),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        items: _items,
-        currentIndex: _selected.value,
-        onTap: (index) => _selected.value = index,
+      body: Center(child: _tabs[_tab.value]),
+      bottomNavigationBar: CustomBottomNav(tab: _tab),
+    );
+  }
+}
+
+class CustomBottomNav extends StatelessWidget {
+  final ValueNotifier tab;
+
+  CustomBottomNav({Key key, this.tab}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      elevation: 8,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CustomNavItem(
+            icon: Icon(Icons.import_export),
+            onPressed: () => tab.value = Tab.Feed,
+            selected: tab.value == Tab.Feed,
+          ),
+          CustomNavItem(
+            icon: Icon(Icons.search),
+            onPressed: () => tab.value = Tab.Search,
+            selected: tab.value == Tab.Search,
+          ),
+          PostNavItem(),
+          CustomNavItem(
+            icon: Icon(Icons.message),
+            onPressed: () => tab.value = Tab.Message,
+            selected: tab.value == Tab.Message,
+          ),
+          CustomNavItem(
+            icon: Icon(Icons.account_circle),
+            onPressed: () => tab.value = Tab.Account,
+            selected: tab.value == Tab.Account,
+          )
+        ],
       ),
+    );
+  }
+}
+
+class CustomNavItem extends StatelessWidget {
+  final Icon icon;
+  final VoidCallback onPressed;
+  final bool selected;
+
+  CustomNavItem({Key key, this.icon, this.onPressed, this.selected}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      color: this.selected ? Colors.blue : Colors.grey,
+      icon: this.icon,
+      onPressed: this.onPressed
+    );
+  }
+}
+
+class PostNavItem extends StatelessWidget {
+
+  PostNavItem({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      child: Icon(Icons.edit),
+      onPressed: () => Navigator.pushNamed(context, TextPost.route),
     );
   }
 }
