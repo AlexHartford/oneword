@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:oneword/src/tabs/home/kebab.dart';
+import 'package:oneword/src/tabs/feed/kebab.dart';
 
 class Content extends StatelessWidget {
   final String username, time, content;
