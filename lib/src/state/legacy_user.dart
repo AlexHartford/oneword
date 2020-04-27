@@ -3,16 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
 import 'package:oneword/src/state/post.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
 
 class UserState with ChangeNotifier {
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  FirebaseUser user;
-
   String id;
   String name;
   int karma;
@@ -41,15 +34,23 @@ class UserState with ChangeNotifier {
   static UserState get instance => _instance ?? UserState._();
 
   Future<void> retrieve() async {
-    this.user = await _auth.currentUser();
-    print('Current user: ${this.user}');
-    if (this.user == null) {
-      _status = Status.New;
+    _status = Status.Authenticating;
+    notifyListeners();
+
+    await Future.delayed(const Duration(seconds : 2));
+    this.id = await _getUniqueId();
+
+    // Found in DB, set fields
+    if (this.id == '123') {
+      this.name = 'Sharp Tiger';
+      this.karma = 69;
+      this.reputation = 420;
+
+      _status = Status.Authenticated;
       notifyListeners();
     } else {
-      _status = Status.Authenticating;
+      _status = Status.New;
       notifyListeners();
-      await _getMetadata();
     }
   }
 
@@ -57,15 +58,15 @@ class UserState with ChangeNotifier {
     _status = Status.Authenticating;
     notifyListeners();
 
-    AuthResult res = await _auth.signInAnonymously();
-    this.user = res.user;
+    await Future.delayed(const Duration(seconds: 2));
 
-    if (this.user == null) {
-      _status = Status.Error;
-      notifyListeners();
-    } else {
-      await _getMetadata();
-    }
+    // Not found in DB, create new user
+    this.name = 'Dull Cat';
+    this.karma = 100;
+    this.reputation = 5;
+
+    _status = Status.Authenticated;
+    notifyListeners();
   }
 
   addVote(String postId, Direction dir, {bool notify = false}) {
@@ -76,28 +77,6 @@ class UserState with ChangeNotifier {
 
   Direction getDirectionForPost(String postId) {
     return votes[postId] ?? Direction.None;
-  }
-
-  Future<void> _getMetadata() async {
-    // Call AWS to get karma, etc.
-    // Handle in backend: If new user, return default values
-    // else return existing values
-    await Future.delayed(const Duration(seconds : 2));
-    bool success = true;
-
-    if (success) {
-      print('Got metadata');
-      this.id = this.user.uid;
-      this.name = 'Spunky Rat';
-      this.karma = 100;
-      this.reputation = 5;
-
-      _status = Status.Authenticated;
-      notifyListeners();
-    } else {
-      _status = Status.Error;
-      notifyListeners();
-    }
   }
 
   Future<String> _getUniqueId() async {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "195720759367",
+    "firebase_url": "https://oneblank-oneword.firebaseio.com",
+    "project_id": "oneblank-oneword",
+    "storage_bucket": "oneblank-oneword.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195720759367:android:41b4396e04794367b1c962",
+        "android_client_info": {
+          "package_name": "com.oneblank.oneword"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195720759367-j0b0bnv3b68nj81i24jncnstela9j7fk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oneblank.oneword",
+            "certificate_hash": "1494bcd42cddc2dd522ef5d903b60485e1226771"
+          }
+        },
+        {
+          "client_id": "195720759367-9h2ok9ijlp18tphtjntil1rptfgu52ic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfNvMEQmPXQkYIXfZvj9sk-5QpAB2T4EU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195720759367-9h2ok9ijlp18tphtjntil1rptfgu52ic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
