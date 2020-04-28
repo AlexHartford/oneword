@@ -20,7 +20,7 @@ class FeedState with ChangeNotifier {
 
     _feed.add(
       PostModel(
-        userId: UserState.instance.id,
+        userId: UserState.instance.uid,
         username: UserState.instance.name,
         content: content,
         time: DateFormat('h:mm a').format(DateTime.now()),

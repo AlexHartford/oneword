@@ -6,14 +6,18 @@ import 'package:oneword/src/state/post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
+const MIN_USERNAME_LENGTH = 3;
+const MIN_PASSWORD_LENGTH = 8;
+const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\.\-_]+$';
 
 class UserState with ChangeNotifier {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  FirebaseUser user;
+  FirebaseUser _user;
 
-  String id;
+  String uid;
+  String did;
   String name;
   int karma;
   int reputation;
@@ -25,7 +29,7 @@ class UserState with ChangeNotifier {
   Status get status => _status;
 
   @override
-  String toString() => 'ID: $id\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
+  String toString() => 'UID: $uid\nDID: $did\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
 
   UserState._() {
     try {
@@ -41,9 +45,9 @@ class UserState with ChangeNotifier {
   static UserState get instance => _instance ?? UserState._();
 
   Future<void> retrieve() async {
-    this.user = await _auth.currentUser();
-    print('Current user: ${this.user}');
-    if (this.user == null) {
+    _user = await _auth.currentUser();
+    print('Current user: $_user');
+    if (_user == null) {
       _status = Status.New;
       notifyListeners();
     } else {
@@ -53,18 +57,46 @@ class UserState with ChangeNotifier {
     }
   }
 
+  // TODO: Check if DeviceID exists on a banned account
   Future<void> create() async {
+    if (_user != null) return await _getMetadata();
     _status = Status.Authenticating;
     notifyListeners();
 
     AuthResult res = await _auth.signInAnonymously();
-    this.user = res.user;
+    _user = res.user;
 
-    if (this.user == null) {
+    if (_user == null) {
       _status = Status.Error;
       notifyListeners();
     } else {
       await _getMetadata();
+    }
+  }
+
+  String convertUsername(String username) => '$username@oneblank.io';
+
+  Future<bool> checkUsername(String username) async =>
+      (await _auth.fetchSignInMethodsForEmail(email: convertUsername(username))).isEmpty;
+
+  Future<bool> update() async {
+    // Updates like added posts, security questions
+  }
+
+  Future<bool> convert(String username, String password) async {
+    String email = convertUsername(username);
+    try {
+      AuthCredential cred = EmailAuthProvider.getCredential(email: email, password: password);
+      AuthResult res = await _user.linkWithCredential(cred);
+      _user = res.user;
+      _status = Status.Authenticated;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      _status = Status.Error;
+      notifyListeners();
+      return false;
     }
   }
 
@@ -87,10 +119,11 @@ class UserState with ChangeNotifier {
 
     if (success) {
       print('Got metadata');
-      this.id = this.user.uid;
-      this.name = 'Spunky Rat';
-      this.karma = 100;
-      this.reputation = 5;
+      uid = _user.uid;
+      did = await _getUniqueId();
+      name = 'Spunky Rat';
+      karma = 100;
+      reputation = 5;
 
       _status = Status.Authenticated;
       notifyListeners();
