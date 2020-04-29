@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ConvertButton extends StatelessWidget {
+class FinalizeButton extends StatelessWidget {
   final Function convert;
   final bool loading;
 
-  ConvertButton({Key key, this.convert, this.loading}) : super(key: key);
+  FinalizeButton({Key key, this.convert, this.loading}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class ConvertButton extends StatelessWidget {
       : Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: RaisedButton(
-            child: Text('Convert'),
+            child: Text('Finalize'),
             onPressed: convert
           ),
         );

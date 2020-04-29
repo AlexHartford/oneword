@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
 const MIN_USERNAME_LENGTH = 3;
 const MIN_PASSWORD_LENGTH = 8;
-const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\.\-_]+$';
+const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\-_]+$';
 
 class UserState with ChangeNotifier {
 
@@ -27,6 +27,8 @@ class UserState with ChangeNotifier {
   Status _status = Status.Uninitialized;
 
   Status get status => _status;
+
+  bool get isLinked => !_user.isAnonymous;
 
   @override
   String toString() => 'UID: $uid\nDID: $did\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
@@ -94,8 +96,6 @@ class UserState with ChangeNotifier {
       return true;
     } catch (e) {
       print(e);
-      _status = Status.Error;
-      notifyListeners();
       return false;
     }
   }
