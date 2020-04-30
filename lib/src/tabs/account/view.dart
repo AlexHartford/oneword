@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:oneword/src/state/user.dart';
 
 import 'package:oneword/src/tabs/account/header.dart';
-import 'package:oneword/src/tabs/account/finalize_button.dart';
+import 'package:oneword/src/tabs/account/finalize_banner.dart';
 
 class Account extends StatelessWidget {
   Account({Key key}) : super(key: key);
@@ -25,7 +25,7 @@ class Account extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          if (user.isLinked) FinalizeButton()
+          if (user.isLinked) FinalizeBanner()
         ]
       )
     );

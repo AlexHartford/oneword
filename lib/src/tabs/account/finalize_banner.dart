@@ -3,10 +3,10 @@ import 'package:oneword/app_text.dart';
 
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 
-class FinalizeButton extends StatelessWidget {
+class FinalizeBanner extends StatelessWidget {
   final Type type;
 
-  FinalizeButton({Key key, this.type}) : super(key: key);
+  FinalizeBanner({Key key, this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,20 +15,19 @@ class FinalizeButton extends StatelessWidget {
     _showDialog() => showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              title: Text('Account Security'),
-              content: RichText(
-                text: SECURE_ACCOUNT_DIALOG_TEXT
-              ),
-              actions: [
-                FlatButton(
-                    child: Text('DON\'T SHOW AGAIN'),
-                    onPressed: () => Navigator.pop(context)),
-                FlatButton(
-                  child: Text('GOT IT'),
-                  onPressed: _onPressed,
-                ),
-              ],
-            ));
+          title: Text('Account Security'),
+          content: SECURE_ACCOUNT_DIALOG_TEXT,
+          actions: [
+            FlatButton(
+                child: Text('DON\'T SHOW AGAIN'),
+                onPressed: () => Navigator.pop(context)),
+            FlatButton(
+              child: Text('GOT IT'),
+              onPressed: _onPressed,
+            ),
+          ],
+        )
+      );
 
     return MaterialBanner(
       content: SECURE_ACCOUNT_BANNER_TEXT,
