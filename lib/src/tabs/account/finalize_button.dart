@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/tabs/account/finalize/view.dart';
 
 enum Type { Icon, Text }
 
@@ -11,7 +12,7 @@ class FinalizeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
-    _onPressed() => print('yolo');
+    _onPressed() => Navigator.pushNamed(context, Finalize.route);
 
     return type == Type.Icon
         ? IconButton(

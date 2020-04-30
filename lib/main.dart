@@ -26,7 +26,7 @@ class App extends StatelessWidget {
         title: 'oneword',
         theme: ThemeData(
           primarySwatch: black,
-          accentColor: Colors.lightBlueAccent,
+          accentColor: Colors.lightBlue,
 //          scaffoldBackgroundColor: Colors.white70,
           buttonTheme: ButtonThemeData(
             buttonColor: black,

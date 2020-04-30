@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:oneword/src/tabs/account/finalize/view.dart';
-import 'package:oneword/src/tabs/account/finalize_button.dart';
-import 'package:oneword/src/tabs/account/header.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
+
+import 'package:oneword/src/tabs/account/header.dart';
+import 'package:oneword/src/tabs/account/finalize_button.dart';
 
 class Account extends StatelessWidget {
   Account({Key key}) : super(key: key);
@@ -21,15 +21,14 @@ class Account extends StatelessWidget {
           title: Text('Account'),
           centerTitle: true,
           actions: <Widget>[
-            user.isLinked ? FinalizeButton(type: Type.Icon) : null
+            if (!user.isLinked) FinalizeButton(type: Type.Icon)
           ],
           flexibleSpace: Header(),
         ),
       ),
       body: ListView(
         children: [
-          user.isLinked ? FinalizeButton(type: Type.Text) : null
-//          Finalize()
+          if (!user.isLinked) FinalizeButton(type: Type.Text)
         ]
       )
     );

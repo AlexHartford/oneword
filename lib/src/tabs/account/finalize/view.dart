@@ -9,6 +9,8 @@ import 'package:oneword/src/tabs/account/finalize/username.dart';
 import 'package:oneword/src/state/user.dart';
 
 class Finalize extends HookWidget {
+  static const route = '/finalize';
+
   Finalize({Key key}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
