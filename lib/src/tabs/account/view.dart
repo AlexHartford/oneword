@@ -20,15 +20,12 @@ class Account extends StatelessWidget {
         child: AppBar(
           title: Text('Account'),
           centerTitle: true,
-          actions: <Widget>[
-            if (!user.isLinked) FinalizeButton(type: Type.Icon)
-          ],
           flexibleSpace: Header(),
         ),
       ),
       body: ListView(
         children: [
-          if (!user.isLinked) FinalizeButton(type: Type.Text)
+          if (user.isLinked) FinalizeButton()
         ]
       )
     );

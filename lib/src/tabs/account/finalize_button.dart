@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:oneword/src/tabs/account/finalize/view.dart';
+import 'package:oneword/app_text.dart';
 
-enum Type { Icon, Text }
+import 'package:oneword/src/tabs/account/finalize/view.dart';
 
 class FinalizeButton extends StatelessWidget {
   final Type type;
@@ -10,20 +10,38 @@ class FinalizeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-
     _onPressed() => Navigator.pushNamed(context, Finalize.route);
 
-    return type == Type.Icon
-        ? IconButton(
-            icon: Icon(Icons.warning),
-            color: Colors.red,
-            onPressed: _onPressed,
-          )
-        : RaisedButton(
-            child: Text('Secure your account now to make it recoverable'),
-            color: Colors.red,
-            onPressed: _onPressed,
-          );
+    _showDialog() => showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('Account Security'),
+              content: RichText(
+                text: SECURE_ACCOUNT_DIALOG_TEXT
+              ),
+              actions: [
+                FlatButton(
+                    child: Text('DON\'T SHOW AGAIN'),
+                    onPressed: () => Navigator.pop(context)),
+                FlatButton(
+                  child: Text('GOT IT'),
+                  onPressed: _onPressed,
+                ),
+              ],
+            ));
+
+    return MaterialBanner(
+      content: SECURE_ACCOUNT_BANNER_TEXT,
+      leading: Icon(Icons.warning),
+      contentTextStyle: TextStyle(color: Colors.black, fontSize: 16),
+      forceActionsBelow: true,
+      actions: [
+        FlatButton(child: Text('LEARN MORE'), onPressed: _showDialog),
+        FlatButton(
+          child: Text('SECURE ACCOUNT'),
+          onPressed: _onPressed,
+        ),
+      ],
+    );
   }
 }
