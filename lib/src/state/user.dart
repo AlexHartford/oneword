@@ -6,6 +6,8 @@ import 'package:oneword/src/state/post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
+enum Gender { Male, Female, Other }
+
 const MIN_USERNAME_LENGTH = 3;
 const MIN_PASSWORD_LENGTH = 8;
 const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\-_]+$';
@@ -21,6 +23,7 @@ class UserState with ChangeNotifier {
   String name;
   int karma;
   int reputation;
+  Gender gender;
 
   Map<String, Direction> votes = Map();
 
@@ -110,6 +113,18 @@ class UserState with ChangeNotifier {
     return votes[postId] ?? Direction.None;
   }
 
+  Image getDefaultAvatar() {
+    switch (gender) {
+      case (Gender.Female):
+        return Image.asset('assets/images/jane.png');
+      case (Gender.Male):
+        return Image.asset('assets/images/john.png');
+      case (Gender.Other):
+      default:
+        return Image.asset('assets/images/joan.png');
+    }
+  }
+
   Future<void> _getMetadata() async {
     // Call AWS to get karma, etc.
     // Handle in backend: If new user, return default values
@@ -124,6 +139,7 @@ class UserState with ChangeNotifier {
       name = 'Spunky Rat';
       karma = 100;
       reputation = 5;
+      gender = Gender.Female;
 
       _status = Status.Authenticated;
       notifyListeners();
