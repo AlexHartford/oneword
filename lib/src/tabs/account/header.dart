@@ -16,9 +16,13 @@ class Header extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: 64),
         CircleAvatar(
-          radius: 50,
+          radius: 52,
           backgroundColor: Colors.white,
-          backgroundImage: user.getDefaultAvatar().image,
+          child: CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.white,
+            backgroundImage: user.getDefaultAvatar().image,
+          ),
         ),
         SizedBox(height: 16),
         Text(
