@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:oneword/src/style.dart';
+
 import 'package:oneword/src/router.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -23,11 +25,11 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'oneword',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          accentColor: Colors.blueAccent,
+          primarySwatch: black,
+          accentColor: Colors.lightBlueAccent,
 //          scaffoldBackgroundColor: Colors.white70,
           buttonTheme: ButtonThemeData(
-            buttonColor: Colors.blue,
+            buttonColor: black,
             textTheme: ButtonTextTheme.primary
           )
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:provider/provider.dart';
 
-import 'package:oneword/src/tabs/account/finalize/finalize_button.dart';
+import 'package:oneword/src/tabs/account/finalize/submit_button.dart';
 import 'package:oneword/src/tabs/account/finalize/password.dart';
 import 'package:oneword/src/tabs/account/finalize/username.dart';
 
@@ -72,7 +72,7 @@ class Finalize extends HookWidget {
             children: <Widget>[
               UsernameField(controller: _usernameController, checkUsername: user.checkUsername),
               PasswordField(controller: _passwordController),
-              FinalizeButton(convert: _convert, loading: loading.value)
+              SubmitButton(convert: _convert, loading: loading.value)
             ],
           ),
         ),

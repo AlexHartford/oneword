@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FinalizeButton extends StatelessWidget {
+class SubmitButton extends StatelessWidget {
   final Function convert;
   final bool loading;
 
-  FinalizeButton({Key key, this.convert, this.loading}) : super(key: key);
+  SubmitButton({Key key, this.convert, this.loading}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
