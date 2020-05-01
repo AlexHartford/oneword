@@ -6,7 +6,7 @@ import 'package:oneword/src/state/post.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:oneword/src/state/preferences.dart';
 
-enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
+enum Status { Uninitialized, Authenticated, Authenticating, Error, New, Deleted }
 enum Gender { Male, Female, Other }
 
 const MIN_USERNAME_LENGTH = 3;
@@ -15,11 +15,10 @@ const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\-_]+$';
 
 class UserState with ChangeNotifier {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  final Preferences _prefs = Preferences();
-
+  FirebaseAuth _auth;
   FirebaseUser _user;
+
+  Preferences _prefs;
 
   String uid;
   String did;
@@ -30,20 +29,27 @@ class UserState with ChangeNotifier {
   int reputation;
   Gender gender;
 
-  Map<String, Direction> votes = Map();
+  Map<String, Direction> _votes;
 
   Status _status = Status.Uninitialized;
 
   Status get status => _status;
 
-  bool get isLinked => !_user.isAnonymous;
+  bool get isLinked => _user != null ? !_user.isAnonymous : false;
 
   Preferences get prefs => _prefs;
 
+  notify() {
+    notifyListeners();
+  }
+
   @override
-  String toString() => 'UID: $uid\nDID: $did\nName: $displayName\n$_status\nKarma: $karma\nRep: $reputation';
+  String toString() => 'UID: $uid\nDID: $did\nName: $displayName\n$_status\nKarma: $karma\nRep: $reputation\nauth: $_auth';
 
   UserState._() {
+    _auth = FirebaseAuth.instance;
+    _prefs = Preferences();
+    _votes = Map();
     try {
       retrieve();
     } catch (e) {
@@ -102,6 +108,7 @@ class UserState with ChangeNotifier {
       AuthCredential cred = EmailAuthProvider.getCredential(email: email, password: password);
       AuthResult res = await _user.linkWithCredential(cred);
       _user = res.user;
+      this.username = username;
       _status = Status.Authenticated;
       notifyListeners();
       return true;
@@ -112,13 +119,13 @@ class UserState with ChangeNotifier {
   }
 
   addVote(String postId, Direction dir, {bool notify = false}) {
-    votes[postId] == dir ? votes[postId] = Direction.None : votes[postId] = dir;
+    _votes[postId] == dir ? _votes[postId] = Direction.None : _votes[postId] = dir;
     // Fire and forget API call to user service
     if (notify) notifyListeners();
   }
 
   Direction getDirectionForPost(String postId) {
-    return votes[postId] ?? Direction.None;
+    return _votes[postId] ?? Direction.None;
   }
 
   Image getDefaultAvatar() {
@@ -136,10 +143,11 @@ class UserState with ChangeNotifier {
   Future<void> delete() async {
     try {
       await _user.delete();
+      await _prefs.clear();
     } catch (e) {
       print(e);
     }
-    _status = Status.New;
+    _status = Status.Deleted;
     notifyListeners();
   }
 
@@ -152,8 +160,12 @@ class UserState with ChangeNotifier {
 
     if (success) {
       print('Got metadata');
+      try {
+        if (!_user.isAnonymous) username = convertEmail(_user.email);
+      } catch (e) {
+        print(e);
+      }
       uid = _user.uid;
-      username = convertEmail(_user.email);
       did = await _getUniqueId();
       displayName = 'Spunky Rat';
       karma = 100;

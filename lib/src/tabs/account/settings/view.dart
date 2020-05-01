@@ -40,16 +40,17 @@ class Settings extends StatelessWidget {
           ),
           TextDivider(text: 'Account', align: TextAlign.Left),
           if (!secured) Setting(
-                icon: Icons.priority_high,
-                setting: 'Enable Recovery',
-                subtext: 'So you don\'t lose access to your account',
-                trailing: Icon(Icons.arrow_forward),
-                onTap: () => Navigator.pushNamed(context, Finalize.route),
-            ),
+            icon: Icons.priority_high,
+            setting: 'Enable Recovery',
+            subtext: 'So you don\'t lose access to your account',
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () => Navigator.pushNamed(context, Finalize.route),
+          ),
           if (secured) Setting(
             icon: Icons.person,
             setting: 'Username',
-            subtext: user.username),
+            subtext: user.username
+          ),
           if (secured) Setting(
             icon: Icons.update,
             setting: 'Change Password',

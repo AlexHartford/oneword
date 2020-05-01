@@ -6,7 +6,6 @@ import 'package:oneword/app_text.dart';
 
 import 'package:oneword/src/state/user.dart';
 
-// TODO: Ask why the user is deleting their account after
 class DeleteDialog extends HookWidget {
   DeleteDialog({Key key}) : super(key: key);
 
@@ -17,9 +16,8 @@ class DeleteDialog extends HookWidget {
     final _checked = useState(false);
 
     _delete() async {
-      // TODO: Reset nav state and prompt for survey
-      Navigator.pop(context);
       await user.delete();
+      Navigator.of(context).pushNamed('/');
     }
 
     return AlertDialog(

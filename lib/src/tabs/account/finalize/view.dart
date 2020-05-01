@@ -59,6 +59,7 @@ class Finalize extends HookWidget {
           ),
         )
       );
+      if (success) Navigator.pop(context);
     }
 
     return Scaffold(
