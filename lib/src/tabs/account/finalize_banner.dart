@@ -12,6 +12,15 @@ class FinalizeBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     _onPressed() => Navigator.pushNamed(context, Finalize.route);
 
+    _showSnackBar() {
+      Navigator.pop(context);
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Done. You can access recovery settings here.')
+        )
+      );
+    }
+
     _showDialog() => showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -20,10 +29,13 @@ class FinalizeBanner extends StatelessWidget {
           actions: [
             FlatButton(
                 child: Text('DON\'T SHOW AGAIN'),
-                onPressed: () => Navigator.pop(context)),
+                textColor: Colors.grey,
+                onPressed: _showSnackBar
+            ),
             FlatButton(
               child: Text('GOT IT'),
-              onPressed: _onPressed,
+              textColor: Colors.blue,
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         )
@@ -31,14 +43,19 @@ class FinalizeBanner extends StatelessWidget {
 
     return MaterialBanner(
       content: SECURE_ACCOUNT_BANNER_TEXT,
-      leading: Icon(Icons.warning),
+      leading: Icon(Icons.lock),
       contentTextStyle: TextStyle(color: Colors.black, fontSize: 16),
       forceActionsBelow: true,
       actions: [
-        FlatButton(child: Text('LEARN MORE'), onPressed: _showDialog),
+        FlatButton(
+          child: Text('LEARN MORE'),
+          textColor: Colors.blue,
+          onPressed: _showDialog
+        ),
         FlatButton(
           child: Text('SECURE ACCOUNT'),
-          onPressed: _onPressed,
+          textColor: Colors.blue,
+          onPressed: _onPressed
         ),
       ],
     );

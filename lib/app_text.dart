@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const SECURE_ACCOUNT_BANNER_TEXT = Text(
-  'Secure your account now to make it recoverable.  This does not require any information that could be used to identify you.'
+  'Secure your account now to make it recoverable.\n\nThis does not require any information that could be used to identify you.'
 );
 
 // ignore: non_constant_identifier_names

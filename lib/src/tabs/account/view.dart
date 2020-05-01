@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/tabs/account/settings_button.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -20,6 +21,9 @@ class Account extends StatelessWidget {
         child: AppBar(
           title: Text('Account'),
           centerTitle: true,
+          actions: [
+            SettingsButton()
+          ],
           flexibleSpace: Header(),
         ),
       ),
