@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+import 'package:oneword/src/state/user.dart';
 
 import 'package:oneword/src/general/text_divider.dart';
-import 'package:oneword/src/state/preferences.dart';
 
 class Settings extends StatelessWidget {
   static const route = '/settings';
@@ -10,34 +13,56 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Preferences prefs = Preferences();
-
-    _getPreferences() async {
-      print(await prefs.map);
-    }
-
-    _getPreferences();
+    final user = Provider.of<UserState>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings')
-      ),
+      appBar: AppBar(title: Text('Settings')),
       body: ListView(
         children: [
           TextDivider(text: 'General', align: TextAlign.Left),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
-          Setting(icon: Icons.verified_user, setting: 'Verified', subtext: 'hello world'),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
+          Setting(icon: Icons.location_searching, setting: 'Reset Locations'),
+          Setting(
+            icon: Icons.bug_report,
+            setting: 'Report Bug',
+            trailing: Icon(Icons.arrow_forward)),
           TextDivider(text: 'Account', align: TextAlign.Left),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
+          !user.isLinked
+            ? Setting(icon: Icons.verified_user, setting: 'Secured')
+            : Setting(
+                icon: Icons.priority_high,
+                setting: 'Enable Recovery',
+                subtext: 'So you don\'t lose access to your account',
+                trailing: Icon(Icons.arrow_forward)
+            ),
+          Setting(
+            icon: Icons.person,
+            setting: 'Username',
+            subtext: user.username),
+          Setting(
+            icon: Icons.update,
+            setting: 'Change Password',
+            trailing: Icon(Icons.arrow_forward)),
+          Setting(
+            icon: Icons.question_answer,
+            setting: 'Security Questions',
+            trailing: Icon(Icons.arrow_forward)),
           TextDivider(text: 'About', align: TextAlign.Left),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
-          Setting(icon: Icons.verified_user, setting: 'Verified'),
-          Setting(icon: Icons.verified_user, setting: 'Verified')
+          Setting(
+            icon: Icons.toc,
+            setting: 'Privacy Policy',
+            trailing: Icon(Icons.arrow_forward)),
+          Setting(
+            icon: Icons.toc,
+            setting: 'Terms of Service',
+            trailing: Icon(Icons.arrow_forward)),
+          Setting(
+            icon: FontAwesomeIcons.trophy,
+            setting: 'Acknowledgements',
+            trailing: Icon(Icons.arrow_forward)),
+          TextDivider(text: 'Danger Zone', align: TextAlign.Left),
+          Setting(icon: Icons.warning, setting: 'Delete Account'),
         ],
-      ),
+      )
     );
   }
 }
@@ -46,20 +71,31 @@ class Setting extends StatelessWidget {
   final IconData icon;
   final String setting;
   final String subtext;
+  final Widget trailing;
+  final Function onTap;
 
-  Setting({Key key, @required this.icon, @required this.setting, this.subtext}) : super(key: key);
+  Setting(
+      {Key key,
+      @required this.icon,
+      @required this.setting,
+      this.subtext,
+      this.trailing,
+      this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(0),
-      shape: Border(),
-        child: ListTile(
-          title: Text(this.setting),
-          leading: Icon(icon),
-          trailing: Text('bar'),
-          subtitle: this.subtext != null ? Text(this.subtext) : null,
-        )
-    );
+        margin: const EdgeInsets.all(0),
+        shape: Border(),
+        child: InkWell(
+          onTap: this.onTap,
+          child: ListTile(
+            title: Text(this.setting),
+            leading: Icon(icon),
+            trailing: this.trailing,
+            subtitle: this.subtext != null ? Text(this.subtext) : null,
+          ),
+        ));
   }
 }

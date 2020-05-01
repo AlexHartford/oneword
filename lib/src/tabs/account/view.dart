@@ -29,7 +29,9 @@ class Account extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          if (user.isLinked) FinalizeBanner()
+          if (user.isLinked) FinalizeBanner(),
+          Row(children: [Icon(Icons.gavel), Text('Honor')],),
+          Row(children: [Icon(Icons.whatshot), Text('Yolo')],)
         ]
       )
     );

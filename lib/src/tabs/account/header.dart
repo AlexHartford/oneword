@@ -26,7 +26,7 @@ class Header extends StatelessWidget {
         ),
         SizedBox(height: 16),
         Text(
-          user.name,
+          user.displayName,
           style: TextStyle(
             color: Colors.white,
             fontSize: 16

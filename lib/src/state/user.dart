@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:oneword/src/state/post.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:oneword/src/state/preferences.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New }
 enum Gender { Male, Female, Other }
@@ -16,11 +17,15 @@ class UserState with ChangeNotifier {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  final Preferences _prefs = Preferences();
+
   FirebaseUser _user;
 
   String uid;
   String did;
-  String name;
+  String displayName;
+  String username;
+  String temp;
   int karma;
   int reputation;
   Gender gender;
@@ -33,8 +38,10 @@ class UserState with ChangeNotifier {
 
   bool get isLinked => !_user.isAnonymous;
 
+  Preferences get prefs => _prefs;
+
   @override
-  String toString() => 'UID: $uid\nDID: $did\nName: $name\n$_status\nKarma: $karma\nRep: $reputation';
+  String toString() => 'UID: $uid\nDID: $did\nName: $displayName\n$_status\nKarma: $karma\nRep: $reputation';
 
   UserState._() {
     try {
@@ -80,6 +87,7 @@ class UserState with ChangeNotifier {
   }
 
   String convertUsername(String username) => '$username@oneblank.io';
+  String convertEmail(String email) => email.substring(0, email.indexOf('@'));
 
   Future<bool> checkUsername(String username) async =>
       (await _auth.fetchSignInMethodsForEmail(email: convertUsername(username))).isEmpty;
@@ -135,8 +143,9 @@ class UserState with ChangeNotifier {
     if (success) {
       print('Got metadata');
       uid = _user.uid;
+      username = convertEmail(_user.email);
       did = await _getUniqueId();
-      name = 'Spunky Rat';
+      displayName = 'Spunky Rat';
       karma = 100;
       reputation = 5;
       gender = Gender.Female;
