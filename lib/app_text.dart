@@ -24,3 +24,20 @@ final SECURE_ACCOUNT_DIALOG_TEXT = RichText(
     ]
   )
 );
+
+// ignore: non_constant_identifier_names
+final DELETE_ACCOUNT_DIALOG_TEXT = RichText(
+  text: TextSpan(
+    style: TextStyle(fontSize: 16, color: Colors.black),
+    children: [
+      TextSpan(
+        text: 'Are you sure you want to delete your account?\n\n'
+      ),
+      TextSpan(
+        text: 'This is a permanent action that cannot be undone under any circumstances.\n',
+        style: TextStyle(fontWeight: FontWeight.bold)
+      ),
+    ]
+  ),
+);
+

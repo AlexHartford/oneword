@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:oneword/app_text.dart';
+import 'package:oneword/src/state/preferences.dart';
+import 'package:oneword/src/state/user.dart';
 
 import 'package:oneword/src/tabs/account/finalize/view.dart';
+import 'package:provider/provider.dart';
 
 class FinalizeBanner extends StatelessWidget {
-  final Type type;
-
-  FinalizeBanner({Key key, this.type}) : super(key: key);
+  FinalizeBanner({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserState>(context);
     _onPressed() => Navigator.pushNamed(context, Finalize.route);
 
     _showSnackBar() {
+      user.prefs.setFlag(PrefKey.HIDE_ACCOUNT_SECURITY_BANNER, true);
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text('Done. You can access recovery settings here.')
+          content: Text('Done. You can access recovery settings here.'),
+          action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () => user.prefs.setFlag(PrefKey.HIDE_ACCOUNT_SECURITY_BANNER, false)
+          ),
         )
       );
     }

@@ -1,10 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum PrefKey { HIDE_ACCOUNT_SECURITY_BANNER }
+
 class Preferences {
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  Future<Map<String, String>> get map async {
+  // TODO: Dynamic value param for map
+  Future<Map<PrefKey, String>> get map async {
     final prefs = await _prefs;
     return Map.fromIterable(
       prefs.getKeys(),
@@ -13,8 +16,18 @@ class Preferences {
     );
   }
 
-  setPreference(String key, String value) async {
+  getFlag(PrefKey key) async {
     final prefs = await _prefs;
-    prefs.setString(key, value);
+    return prefs.getBool(key.toString());
+  }
+
+  setFlag(PrefKey key, bool flag) async {
+    final prefs = await _prefs;
+    prefs.setBool(key.toString(), flag);
+  }
+
+  setPreference(PrefKey key, String value) async {
+    final prefs = await _prefs;
+    prefs.setString(key.toString(), value);
   }
 }

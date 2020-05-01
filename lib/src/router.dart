@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
-import 'package:oneword/src/tabs/account/settings.dart';
+import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
+import 'package:oneword/src/tabs/account/settings/view.dart';
 import 'package:oneword/src/tabs/feed/view.dart';
 import 'package:oneword/src/landing.dart';
 import 'package:oneword/src/tabs/post/text.dart';
@@ -19,6 +20,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => Finalize());
       case Settings.route:
         return MaterialPageRoute(builder: (_) => Settings());
+      case Acknowledgements.route:
+        return MaterialPageRoute(builder: (_) => Acknowledgements());
       default:
         // TODO: Log this in some more meaningful way
         print('\n\n*****\nBAD ROUTE\n*****\n\n');

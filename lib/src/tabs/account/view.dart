@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/state/preferences.dart';
 import 'package:oneword/src/tabs/account/settings_button.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,12 @@ class Account extends StatelessWidget {
     final user =  Provider.of<UserState>(context);
     final height = MediaQuery.of(context).size.height;
 
+    Future<bool> _getPref() async {
+      return await user.prefs.getFlag(PrefKey.HIDE_ACCOUNT_SECURITY_BANNER);
+    }
+
+    // TODO: Retrieve updated account stats / settings
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(height * 0.33),
@@ -27,13 +34,26 @@ class Account extends StatelessWidget {
           flexibleSpace: Header(),
         ),
       ),
-      body: ListView(
-        children: [
-          if (user.isLinked) FinalizeBanner(),
-          Row(children: [Icon(Icons.gavel), Text('Honor')],),
-          Row(children: [Icon(Icons.whatshot), Text('Yolo')],)
-        ]
-      )
+      body: FutureBuilder(
+        future: _getPref(),
+        builder: (_, AsyncSnapshot snapshot) {
+          switch(snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return const CircularProgressIndicator();
+            default:
+              bool _hideBanner;
+              if (snapshot.hasError) _hideBanner = false;
+              else _hideBanner = snapshot.data ?? false;
+              return ListView(
+                  children: [
+                    if (!user.isLinked && !_hideBanner) FinalizeBanner(),
+                    Row(children: [Icon(Icons.gavel), Text('Honor')]),
+                    Row(children: [Icon(Icons.whatshot), Text('Yolo')])
+                  ]
+              );
+          }
+        },
+      ),
     );
   }
 }

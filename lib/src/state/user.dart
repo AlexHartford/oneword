@@ -133,6 +133,16 @@ class UserState with ChangeNotifier {
     }
   }
 
+  Future<void> delete() async {
+    try {
+      await _user.delete();
+    } catch (e) {
+      print(e);
+    }
+    _status = Status.New;
+    notifyListeners();
+  }
+
   Future<void> _getMetadata() async {
     // Call AWS to get karma, etc.
     // Handle in backend: If new user, return default values
