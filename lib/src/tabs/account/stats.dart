@@ -16,12 +16,12 @@ class Stats extends StatelessWidget {
       mainAxisSpacing: 10,
       shrinkWrap: true,
       children: [
-        Stat(label: 'Honor', icon: Icons.gavel, value: 69),
-        Stat(label: 'Votes', icon: Icons.whatshot, value: 420),
-        Stat(label: 'Honor', icon: Icons.gavel, value: 69),
-        Stat(label: 'Votes', icon: Icons.whatshot, value: 420),
-        Stat(label: 'Honor', icon: Icons.gavel, value: 69),
-        Stat(label: 'Votes', icon: Icons.whatshot, value: 420)
+        Stat(label: 'Standing', icon: Icons.center_focus_weak, value: user.reputation),
+        Stat(label: 'Votes', icon: Icons.import_export, value: user.numVotes),
+        Stat(label: 'Verified Reports', icon: Icons.gavel, value: user.numVerifiedReports),
+        Stat(label: 'Posts', icon: Icons.whatshot, value: user.numPosts),
+        Stat(label: 'Comments', icon: Icons.comment, value: user.numComments),
+        Stat(label: 'Karma', icon: Icons.offline_bolt, value: user.karma)
       ],
     );
   }
