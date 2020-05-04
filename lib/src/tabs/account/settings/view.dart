@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
+import 'package:oneword/src/tabs/account/settings/change_password.dart';
 import 'package:oneword/src/tabs/account/settings/delete_dialog.dart';
+import 'package:oneword/src/tabs/account/settings/security_questions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -54,12 +56,14 @@ class Settings extends StatelessWidget {
           if (secured) Setting(
             icon: Icons.update,
             setting: 'Change Password',
-            trailing: Icon(Icons.arrow_forward)
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () => Navigator.pushNamed(context, ChangePassword.route)
           ),
           if (secured) Setting(
             icon: Icons.question_answer,
             setting: 'Security Questions',
-            trailing: Icon(Icons.arrow_forward)
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () => Navigator.pushNamed(context, SecurityQuestions.route)
           ),
           TextDivider(text: 'About', align: TextAlign.Left),
           Setting(
