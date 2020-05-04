@@ -19,9 +19,10 @@ class FinalizeBanner extends StatelessWidget {
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text('Done. You can access recovery settings here.'),
+          content: Text('Done. You can access recovery settings anytime.'),
+          behavior: SnackBarBehavior.floating,
           action: SnackBarAction(
-            label: 'Undo',
+            label: 'UNDO',
             onPressed: () => user.prefs.setFlag(PrefKey.HIDE_ACCOUNT_SECURITY_BANNER, false)
           ),
         )

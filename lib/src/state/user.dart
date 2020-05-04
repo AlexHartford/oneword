@@ -100,6 +100,7 @@ class UserState with ChangeNotifier {
 
   Future<bool> update() async {
     // Updates like added posts, security questions
+    return true;
   }
 
   Future<bool> convert(String username, String password) async {
@@ -109,8 +110,10 @@ class UserState with ChangeNotifier {
       AuthResult res = await _user.linkWithCredential(cred);
       _user = res.user;
       this.username = username;
+      this.karma += 100;
       _status = Status.Authenticated;
       notifyListeners();
+      update();
       return true;
     } catch (e) {
       print(e);

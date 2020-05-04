@@ -17,7 +17,7 @@ class Header extends StatelessWidget {
         SizedBox(height: 64),
         CircleAvatar(
           radius: 52,
-          backgroundColor: user.gender == Gender.Female ? Colors.pinkAccent : Colors.lightBlueAccent,
+          backgroundColor: Colors.white,
           child: CircleAvatar(
             radius: 50,
             backgroundColor: Colors.white,

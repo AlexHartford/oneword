@@ -38,6 +38,7 @@ class Account extends StatelessWidget {
         future: _getPref(),
         builder: (_, AsyncSnapshot snapshot) {
           switch(snapshot.connectionState) {
+            // TODO: Is this necessary?  Can we just use default.  Maybe wait a second before defaulting.
             case ConnectionState.waiting:
               return const CircularProgressIndicator();
             default:
