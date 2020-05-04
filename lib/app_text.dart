@@ -45,6 +45,12 @@ const CHANGE_PASSWORD_TEXT = Text(
   'First, verify your current password.\nThen enter the new password you would like to use.',
   style: TextStyle(
     fontSize: 16
-  ),
+  )
 );
 
+const DELETE_ACCOUNT_TEXT = Text(
+  'If you are sure you want to delete your account, please provide your password below for security.',
+  style: TextStyle(
+      fontSize: 16
+  )
+);

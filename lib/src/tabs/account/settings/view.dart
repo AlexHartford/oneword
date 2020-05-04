@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:oneword/src/general/list_card.dart';
+import 'package:oneword/src/tabs/account/delete/delete_dialog.dart';
+import 'package:oneword/src/tabs/account/delete/view.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
 import 'package:oneword/src/tabs/account/settings/change_password.dart';
-import 'package:oneword/src/tabs/account/settings/delete_dialog.dart';
 import 'package:oneword/src/tabs/account/settings/security_questions.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,7 @@ import 'package:oneword/src/tos.dart';
 import 'package:oneword/src/welcome/view.dart';
 
 class Settings extends StatelessWidget {
-  static const route = '/ListCards';
+  static const route = '/settings';
 
   Settings({Key key}) : super(key: key);
 
@@ -31,7 +32,7 @@ class Settings extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('ListCards')),
+      appBar: AppBar(title: Text('Settings')),
       body: ListView(
         children: [
           TextDivider(text: 'General', align: TextAlign.Left),
@@ -86,7 +87,12 @@ class Settings extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, Acknowledgements.route)
           ),
           TextDivider(text: 'Danger Zone', align: TextAlign.Left),
-          ListCard(icon: Icons.warning, title: 'Delete Account', onTap: _showDeleteDialog)
+          ListCard(
+            icon: Icons.warning,
+            title: 'Delete Account',
+            trailing: secured ? Icon(Icons.arrow_forward) : null,
+            onTap: () => secured ? Navigator.pushNamed(context, DeleteAccount.route) : _showDeleteDialog()
+          )
         ],
       )
     );
