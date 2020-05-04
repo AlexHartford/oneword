@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SubmitButton extends StatelessWidget {
-  final Function convert;
+  final Function submit;
   final bool loading;
+  final String text;
 
-  SubmitButton({Key key, this.convert, this.loading}) : super(key: key);
+  SubmitButton({Key key, @required this.submit, @required this.loading, @required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +14,8 @@ class SubmitButton extends StatelessWidget {
       : Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: RaisedButton(
-            child: Text('Finalize'),
-            onPressed: convert
+            child: Text(this.text),
+            onPressed: submit
           ),
         );
   }

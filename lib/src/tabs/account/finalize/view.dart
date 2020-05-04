@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:oneword/app_text.dart';
 import 'package:oneword/src/tabs/account/finalize/text_section.dart';
 import 'package:provider/provider.dart';
 
@@ -35,14 +36,7 @@ class Finalize extends HookWidget {
         ? _key.currentState.showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.all_inclusive),
-                SizedBox(width: 8),
-                Text('Successfully finalized your account!'),
-              ],
-            ),
+            content: Text('Successfully finalized your account!'),
           )
         )
         : _key.currentState.showSnackBar(SnackBar(
@@ -51,13 +45,7 @@ class Finalize extends HookWidget {
             onPressed: () => _convert()
           ),
           behavior: SnackBarBehavior.floating,
-          content: Row(
-            children: <Widget>[
-              Icon(Icons.cloud_off),
-              SizedBox(width: 8),
-              Text('Please try again later.'),
-            ],
-          ),
+          content: Text('Please try again later.'),
         )
       );
       if (success) Navigator.pop(context);
@@ -74,10 +62,10 @@ class Finalize extends HookWidget {
           child: ListView(
             shrinkWrap: false,
             children: <Widget>[
-              TextSection(),
+              TextSection(text: SECURE_ACCOUNT_DIALOG_TEXT),
               UsernameField(controller: _usernameController, checkUsername: user.checkUsername),
               PasswordField(controller: _passwordController),
-              SubmitButton(convert: _convert, loading: loading.value)
+              SubmitButton(submit: _convert, loading: loading.value, text: 'Finalize')
             ],
           ),
         ),

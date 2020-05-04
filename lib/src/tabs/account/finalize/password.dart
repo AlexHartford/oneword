@@ -4,8 +4,9 @@ import 'package:oneword/src/state/user.dart';
 
 class PasswordField extends HookWidget {
   final TextEditingController controller;
+  final String labelText;
 
-  PasswordField({Key key, this.controller}) : super(key: key);
+  PasswordField({Key key, @required this.controller, this.labelText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class PasswordField extends HookWidget {
         obscureText: obscureText.value,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.lock),
-          labelText: 'Password',
+          labelText: labelText ?? 'Password',
           border: OutlineInputBorder(),
           suffixIcon: IconButton(
             icon: obscureText.value ? Icon(Icons.visibility_off) : Icon(Icons.visibility),

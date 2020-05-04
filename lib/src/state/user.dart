@@ -92,7 +92,7 @@ class UserState with ChangeNotifier {
     }
   }
 
-  String convertUsername(String username) => '$username@oneblank.io';
+  String convertUsername(String username) => '$username@doeapp.io';
   String convertEmail(String email) => email.substring(0, email.indexOf('@'));
 
   Future<bool> checkUsername(String username) async =>
@@ -152,6 +152,24 @@ class UserState with ChangeNotifier {
     }
     _status = Status.Deleted;
     notifyListeners();
+  }
+
+  Future<Map<bool, String>> changePassword(String currentPass, String newPass) async {
+    try {
+      AuthCredential cred = EmailAuthProvider.getCredential(email: _user.email, password: currentPass);
+      AuthResult res = await _user.reauthenticateWithCredential(cred);
+      _user.updatePassword(newPass);
+      return { true: 'Successfully updated password!' };
+    } catch (e) {
+      print(e);
+      if (e.toString().contains('TOO_MANY_REQUESTS')) {
+        return { false: 'Too many failed attempts.\nTry again later.' };
+      } else if (e.toString().contains('The password is invalid or the user does not have a password')) {
+        return { false: 'Current password is incorrect.' };
+      } else {
+        return { false: 'Please try again later.'};
+      }
+    }
   }
 
   Future<void> _getMetadata() async {

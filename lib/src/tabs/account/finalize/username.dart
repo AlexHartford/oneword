@@ -6,7 +6,7 @@ class UsernameField extends HookWidget {
   final TextEditingController controller;
   final Function checkUsername;
 
-  UsernameField({Key key, this.controller, this.checkUsername}) : super(key: key);
+  UsernameField({Key key, @required this.controller, @required this.checkUsername}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

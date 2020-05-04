@@ -41,3 +41,10 @@ final DELETE_ACCOUNT_DIALOG_TEXT = RichText(
   ),
 );
 
+const CHANGE_PASSWORD_TEXT = Text(
+  'First, verify your current password.\nThen enter the new password you would like to use.',
+  style: TextStyle(
+    fontSize: 16
+  ),
+);
+
