@@ -25,7 +25,7 @@ class PasswordField extends HookWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: TextFormField(
         controller: controller,
         validator: _validator,

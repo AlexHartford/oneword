@@ -23,7 +23,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FeedState()),
       ],
       child: MaterialApp(
-        title: 'oneword',
+        title: 'doe',
         theme: ThemeData(
           primarySwatch: black,
           accentColor: Colors.lightBlue,

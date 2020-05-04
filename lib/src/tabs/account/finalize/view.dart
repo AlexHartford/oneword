@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:oneword/src/tabs/account/finalize/text_section.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/tabs/account/finalize/submit_button.dart';
@@ -73,6 +74,7 @@ class Finalize extends HookWidget {
           child: ListView(
             shrinkWrap: false,
             children: <Widget>[
+              TextSection(),
               UsernameField(controller: _usernameController, checkUsername: user.checkUsername),
               PasswordField(controller: _passwordController),
               SubmitButton(convert: _convert, loading: loading.value)
