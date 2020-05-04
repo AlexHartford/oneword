@@ -147,6 +147,18 @@ class UserState with ChangeNotifier {
     }
   }
 
+  Future<bool> reAuthenticate(String password) async {
+    try {
+      AuthCredential cred = EmailAuthProvider.getCredential(email: _user.email, password: password);
+      AuthResult res = await _user.reauthenticateWithCredential(cred);
+      _user = res.user;
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<void> delete() async {
     try {
       await _user.delete();

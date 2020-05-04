@@ -42,7 +42,8 @@ class ChangePassword extends HookWidget {
           SnackBar(
             action: SnackBarAction(
               label: 'FORGOT PASSWORD',
-              onPressed: () => _submit()
+              // TODO: IMPLEMENT FORGOT PASSWORD FLOW
+              onPressed: () => print('TODO: MAKE THIS DO SOMETHING')
             ),
             behavior: SnackBarBehavior.floating,
             content: Text(success[false])
