@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:oneword/src/general/list_card.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
 import 'package:oneword/src/tabs/account/settings/change_password.dart';
@@ -14,7 +15,7 @@ import 'package:oneword/src/tos.dart';
 import 'package:oneword/src/welcome/view.dart';
 
 class Settings extends StatelessWidget {
-  static const route = '/settings';
+  static const route = '/ListCards';
 
   Settings({Key key}) : super(key: key);
 
@@ -30,97 +31,63 @@ class Settings extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('Settings')),
+      appBar: AppBar(title: Text('ListCards')),
       body: ListView(
         children: [
           TextDivider(text: 'General', align: TextAlign.Left),
-          Setting(icon: Icons.location_searching, setting: 'Reset Locations'),
-          Setting(
+          ListCard(icon: Icons.location_searching, title: 'Reset Locations'),
+          ListCard(
             icon: Icons.bug_report,
-            setting: 'Report Bug',
+            title: 'Report Bug',
             trailing: Icon(Icons.arrow_forward)
           ),
           TextDivider(text: 'Account', align: TextAlign.Left),
-          if (!secured) Setting(
+          if (!secured) ListCard(
             icon: Icons.priority_high,
-            setting: 'Enable Recovery',
+            title: 'Enable Recovery',
             subtext: 'So you don\'t lose access to your account',
             trailing: Icon(Icons.arrow_forward),
             onTap: () => Navigator.pushNamed(context, Finalize.route),
           ),
-          if (secured) Setting(
+          if (secured) ListCard(
             icon: Icons.person,
-            setting: 'Username',
+            title: 'Username',
             subtext: user.username
           ),
-          if (secured) Setting(
+          if (secured) ListCard(
             icon: Icons.update,
-            setting: 'Change Password',
+            title: 'Change Password',
             trailing: Icon(Icons.arrow_forward),
             onTap: () => Navigator.pushNamed(context, ChangePassword.route)
           ),
-          if (secured) Setting(
+          if (secured) ListCard(
             icon: Icons.question_answer,
-            setting: 'Security Questions',
+            title: 'Security Questions',
             trailing: Icon(Icons.arrow_forward),
             onTap: () => Navigator.pushNamed(context, SecurityQuestions.route)
           ),
           TextDivider(text: 'About', align: TextAlign.Left),
-          Setting(
+          ListCard(
             icon: Icons.toc,
-            setting: 'Terms of Service',
+            title: 'Terms of Service',
             trailing: Icon(Icons.arrow_forward),
             onTap: () => Navigator.pushNamed(context, Tos.route, arguments: Tabs.ToS.index)
           ),
-          Setting(
+          ListCard(
             icon: Icons.toc,
-            setting: 'Privacy Policy',
+            title: 'Privacy Policy',
             trailing: Icon(Icons.arrow_forward),
             onTap: () => Navigator.pushNamed(context, Tos.route, arguments: Tabs.PP.index)
           ),
-          Setting(
+          ListCard(
             icon: FontAwesomeIcons.trophy,
-            setting: 'Acknowledgements',
+            title: 'Acknowledgements',
             trailing: Icon(Icons.arrow_forward),
             onTap: () => Navigator.pushNamed(context, Acknowledgements.route)
           ),
           TextDivider(text: 'Danger Zone', align: TextAlign.Left),
-          Setting(icon: Icons.warning, setting: 'Delete Account', onTap: _showDeleteDialog)
+          ListCard(icon: Icons.warning, title: 'Delete Account', onTap: _showDeleteDialog)
         ],
-      )
-    );
-  }
-}
-
-class Setting extends StatelessWidget {
-  final IconData icon;
-  final String setting;
-  final String subtext;
-  final Widget trailing;
-  final onTap;
-
-  Setting(
-      {Key key,
-      @required this.icon,
-      @required this.setting,
-      this.subtext,
-      this.trailing,
-      this.onTap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(0),
-      shape: Border(),
-      child: InkWell(
-        onTap: this.onTap,
-        child: ListTile(
-          title: Text(this.setting),
-          leading: Icon(icon),
-          trailing: this.trailing,
-          subtitle: this.subtext != null ? Text(this.subtext) : null,
-        ),
       )
     );
   }
