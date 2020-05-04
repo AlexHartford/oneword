@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oneword/src/state/preferences.dart';
 import 'package:oneword/src/tabs/account/settings_button.dart';
+import 'package:oneword/src/tabs/account/stats.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -38,7 +39,6 @@ class Account extends StatelessWidget {
         future: _getPref(),
         builder: (_, AsyncSnapshot snapshot) {
           switch(snapshot.connectionState) {
-            // TODO: Is this necessary?  Can we just use default.  Maybe wait a second before defaulting.
             case ConnectionState.waiting:
               return const CircularProgressIndicator();
             default:
@@ -46,11 +46,11 @@ class Account extends StatelessWidget {
               if (snapshot.hasError) _hideBanner = false;
               else _hideBanner = snapshot.data ?? false;
               return ListView(
-                  children: [
-                    if (!user.isLinked && !_hideBanner) FinalizeBanner(),
-                    Row(children: [Icon(Icons.gavel), Text('Honor')]),
-                    Row(children: [Icon(Icons.whatshot), Text('Yolo')])
-                  ]
+                shrinkWrap: true,
+                children: [
+                  if (!user.isLinked && !_hideBanner) FinalizeBanner(),
+                  Stats()
+                ]
               );
           }
         },

@@ -24,10 +24,14 @@ class UserState with ChangeNotifier {
   String did;
   String displayName;
   String username;
-  String temp;
+  Gender gender;
+
   int karma;
   int reputation;
-  Gender gender;
+  int numVerifiedReports;
+  int numPosts;
+  int numComments;
+  int numVotes;
 
   Map<String, Direction> _votes;
 
@@ -158,6 +162,7 @@ class UserState with ChangeNotifier {
     try {
       AuthCredential cred = EmailAuthProvider.getCredential(email: _user.email, password: currentPass);
       AuthResult res = await _user.reauthenticateWithCredential(cred);
+      _user = res.user;
       _user.updatePassword(newPass);
       return { true: 'Successfully updated password!' };
     } catch (e) {
@@ -191,6 +196,10 @@ class UserState with ChangeNotifier {
       displayName = 'Spunky Rat';
       karma = 100;
       reputation = 5;
+      numComments = 602;
+      numPosts = 123;
+      numVotes = 1000;
+      numVerifiedReports = 7;
       gender = Gender.Female;
 
       _status = Status.Authenticated;
