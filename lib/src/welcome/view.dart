@@ -9,6 +9,8 @@ enum Tabs { ToS, PP }
 class Welcome extends StatelessWidget {
   static const route = '/welcome';
 
+  Welcome({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserState>(context);

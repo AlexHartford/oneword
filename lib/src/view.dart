@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+import 'package:oneword/src/state/user.dart';
 
 import 'package:oneword/src/tabs/post/text.dart';
 import 'package:oneword/src/tabs/feed/view.dart';
@@ -94,9 +97,11 @@ class PostNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserState>(context);
+
     return RaisedButton(
-      child: Icon(Icons.edit),
-      onPressed: () => Navigator.pushNamed(context, TextPost.route),
+      child: user.banned ? Icon(Icons.block) : Icon(Icons.edit),
+      onPressed: user.banned ? null : () => Navigator.pushNamed(context, TextPost.route),
     );
   }
 }
