@@ -25,6 +25,8 @@ class UserState with ChangeNotifier {
   String displayName;
   String username;
   Gender gender;
+  bool banned;
+  String bannedUntilDate;
 
   int karma;
   int reputation;
@@ -189,6 +191,13 @@ class UserState with ChangeNotifier {
     }
   }
 
+  Future<void> ban() async {
+    this.banned = true;
+    this.bannedUntilDate = '05-10-2020';
+    // Update user
+    notifyListeners();
+  }
+
   Future<void> _getMetadata() async {
     // Call AWS to get karma, etc.
     // Handle in backend: If new user, return default values
@@ -213,6 +222,7 @@ class UserState with ChangeNotifier {
       numVotes = 1000;
       numVerifiedReports = 7;
       gender = Gender.Female;
+      banned = false;
 
       _status = Status.Authenticated;
       notifyListeners();
