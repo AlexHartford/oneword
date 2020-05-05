@@ -4,8 +4,8 @@ import 'package:oneword/app_text.dart';
 import 'package:oneword/src/tabs/account/finalize/text_section.dart';
 import 'package:provider/provider.dart';
 
-import 'package:oneword/src/tabs/account/finalize/submit_button.dart';
-import 'package:oneword/src/tabs/account/finalize/password.dart';
+import 'package:oneword/src/general/auth/submit_button.dart';
+import 'package:oneword/src/general/auth/password_field.dart';
 
 import 'package:oneword/src/state/user.dart';
 

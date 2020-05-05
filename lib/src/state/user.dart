@@ -106,12 +106,28 @@ class UserState with ChangeNotifier {
   String convertUsername(String username) => '$username@doeapp.io';
   String convertEmail(String email) => email.substring(0, email.indexOf('@'));
 
-  Future<bool> checkUsername(String username) async =>
-      (await _auth.fetchSignInMethodsForEmail(email: convertUsername(username))).isEmpty;
+  Future<bool> checkEmail(String email) async =>
+      (await _auth.fetchSignInMethodsForEmail(email: email)).isEmpty;
 
   Future<bool> update() async {
     // Updates like added posts, security questions
     return true;
+  }
+
+  Future<bool> createWithEmail(String email, String password) async {
+    print(email);
+    try {
+      AuthResult res = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      _user = res.user;
+      _user.sendEmailVerification();
+      await _getMetadata();
+      _status = Status.Authenticated;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   Future<bool> convert(String username, String password) async {

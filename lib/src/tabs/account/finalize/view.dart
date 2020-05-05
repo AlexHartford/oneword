@@ -4,9 +4,9 @@ import 'package:oneword/app_text.dart';
 import 'package:oneword/src/tabs/account/finalize/text_section.dart';
 import 'package:provider/provider.dart';
 
-import 'package:oneword/src/tabs/account/finalize/submit_button.dart';
-import 'package:oneword/src/tabs/account/finalize/password.dart';
-import 'package:oneword/src/tabs/account/finalize/username.dart';
+import 'package:oneword/src/general/auth/submit_button.dart';
+import 'package:oneword/src/general/auth/password_field.dart';
+import 'package:oneword/src/general/auth/email_field.dart';
 
 import 'package:oneword/src/state/user.dart';
 
@@ -63,7 +63,7 @@ class Finalize extends HookWidget {
             shrinkWrap: false,
             children: <Widget>[
               TextSection(text: SECURE_ACCOUNT_DIALOG_TEXT),
-              UsernameField(controller: _usernameController, checkUsername: user.checkUsername),
+              EmailField(controller: _usernameController),
               PasswordField(controller: _passwordController),
               SubmitButton(submit: _convert, loading: loading.value, text: 'Finalize')
             ],

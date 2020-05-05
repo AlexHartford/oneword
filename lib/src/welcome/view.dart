@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/welcome/create_email.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -26,8 +27,21 @@ class Welcome extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 RaisedButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (_) => CreateEmail(),
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0)
+                      )
+                    ),
+                  ),
+                  child: Text('Create account'),
+                ),
+                OutlineButton(
                   onPressed: () => user.create(),
-                  child: Text('Join Now'),
+                  child: Text('Continue as guest'),
                 ),
                 Text(
                   'By proceeding you agree to the\nTerms of Service and Privacy Policy',
