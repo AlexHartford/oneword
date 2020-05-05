@@ -28,6 +28,9 @@ class UserState with ChangeNotifier {
   bool banned;
   String bannedUntilDate;
 
+  List blockedUsers;
+  List reportedUsers;
+
   int karma;
   int reputation;
   int numVerifiedReports;
@@ -56,6 +59,8 @@ class UserState with ChangeNotifier {
     _auth = FirebaseAuth.instance;
     _prefs = Preferences();
     _votes = Map();
+    blockedUsers = [];
+    reportedUsers = [];
     try {
       retrieve();
     } catch (e) {
