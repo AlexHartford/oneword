@@ -6,7 +6,6 @@ import 'package:oneword/src/tabs/account/delete/view.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
 import 'package:oneword/src/tabs/account/settings/change_password.dart';
-import 'package:oneword/src/tabs/account/settings/security_questions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
