@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:oneword/app_text.dart';
+import 'package:oneword/src/general/auth/forgot_password.dart';
 import 'package:oneword/src/tabs/account/finalize/text_section.dart';
 import 'package:provider/provider.dart';
 
@@ -41,8 +42,7 @@ class DeleteAccount extends HookWidget {
         SnackBar(
           action: SnackBarAction(
             label: 'FORGOT PASSWORD',
-            // TODO: IMPLEMENT FORGOT PASSWORD FLOW
-            onPressed: () => print('TODO: MAKE THIS DO SOMETHING')
+            onPressed: () => Navigator.pushNamed(context, ForgotPassword.route)
           ),
           behavior: SnackBarBehavior.floating,
           content: Text('Failed to authenticate.'),

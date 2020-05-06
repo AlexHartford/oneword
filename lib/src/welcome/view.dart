@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oneword/src/welcome/create_email.dart';
+import 'package:oneword/src/welcome/sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -28,6 +29,19 @@ class Welcome extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                RaisedButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (_) => SignIn(formKey: _formKey),
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(25.0)
+                        )
+                    ),
+                  ),
+                  child: Text('Sign in'),
+                ),
                 RaisedButton(
                   onPressed: () => showModalBottomSheet(
                     context: context,

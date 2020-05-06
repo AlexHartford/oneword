@@ -19,7 +19,6 @@ class UserState with ChangeNotifier {
   String uid; // Unique user ID
   String did; // Device ID
   String displayName; // Name to show on posts
-  String email;
   Gender gender;
   bool banned;
   String bannedUntilDate;
@@ -33,6 +32,8 @@ class UserState with ChangeNotifier {
   int numPosts;
   int numComments;
   int numVotes;
+
+  String get email => _user.email;
 
   Map<String, Direction> _votes;
 
@@ -113,6 +114,18 @@ class UserState with ChangeNotifier {
     return true;
   }
 
+  Future<bool> signInWithEmail(String email, String password) async {
+    try {
+      AuthResult res = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      _user = res.user;
+      await _getMetadata();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<void> signOut() async {
     await _auth.signOut();
     _status = Status.New;
@@ -139,7 +152,6 @@ class UserState with ChangeNotifier {
       AuthCredential cred = EmailAuthProvider.getCredential(email: email, password: password);
       AuthResult res = await _user.linkWithCredential(cred);
       _user = res.user;
-      this.email = email;
       this.karma += 100;
       _status = Status.Authenticated;
       notifyListeners();
@@ -195,6 +207,16 @@ class UserState with ChangeNotifier {
     _status = Status.Deleted;
     notifyListeners();
   }
+  
+  Future<bool> forgotPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 
   Future<Map<bool, String>> changePassword(String currentPass, String newPass) async {
     try {
@@ -233,7 +255,6 @@ class UserState with ChangeNotifier {
       print('Got metadata');
       uid = _user.uid;
       did = await _getUniqueId();
-      email = _user.email;
       displayName = 'Spunky Rat';
       karma = 100;
       reputation = 5;

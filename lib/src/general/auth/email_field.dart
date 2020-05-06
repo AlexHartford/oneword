@@ -6,8 +6,9 @@ import 'package:oneword/src/state/user.dart';
 
 class EmailField extends HookWidget {
   final TextEditingController controller;
+  final validator;
 
-  EmailField({Key key, @required this.controller}) : super(key: key);
+  EmailField({Key key, @required this.controller, this.validator}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class EmailField extends HookWidget {
       child: TextFormField(
         autofocus: true,
         controller: controller,
-        validator: _validator,
+        validator: validator ?? _validator,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.email),
           labelText: 'Email',

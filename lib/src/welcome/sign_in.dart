@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:oneword/src/general/auth/forgot_password.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -8,16 +9,17 @@ import 'package:oneword/src/general/auth/email_field.dart';
 import 'package:oneword/src/general/auth/password_field.dart';
 import 'package:oneword/src/general/auth/submit_button.dart';
 
-class CreateEmail extends HookWidget {
+class SignIn extends HookWidget {
   final formKey;
 
-  CreateEmail({Key key, @required this.formKey}) : super(key: key);
+  SignIn({Key key, this.formKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserState>(context);
 
     final _loading = useState(false);
+    final _failed = useState(false);
 
     final _emailController = useTextEditingController();
     final _passwordController = useTextEditingController();
@@ -25,11 +27,13 @@ class CreateEmail extends HookWidget {
     _onSubmit() async {
       if (!formKey.currentState.validate()) return;
       _loading.value = true;
-      bool success = await user.createWithEmail(
-        _emailController.text,
-        _passwordController.text
+      bool success = await user.signInWithEmail(
+          _emailController.text,
+          _passwordController.text
       );
       _loading.value = false;
+
+      _failed.value = !success;
 
       if (success) Navigator.pop(context);
     }
@@ -43,27 +47,34 @@ class CreateEmail extends HookWidget {
           children: [
             SizedBox(height: 16),
             Text(
-              'Welcome to doe!',
+              'Welcome back!',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold
               )
             ),
-            Text(
-              'Your email is used for verification purposes only.\nIt will not be visible to anyone else.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16
-              ),
+            EmailField(
+              controller: _emailController,
+              validator: (value) => value.isEmpty ? 'Please enter email' : null
             ),
-            EmailField(controller: _emailController),
-            PasswordField(controller: _passwordController),
+            PasswordField(
+              controller: _passwordController,
+              validator: (value) => value.isEmpty ? 'Please enter password' : null
+            ),
             SubmitButton(
-              text: 'CREATE ACCOUNT',
-              loading: _loading.value,
-              submit: _onSubmit
+                text: 'SIGN IN',
+                loading: _loading.value,
+                submit: _onSubmit
             ),
+            if (_failed.value)
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                child: OutlineButton(
+                  child: Text('FORGOT PASSWORD'),
+                  onPressed: () => Navigator.popAndPushNamed(context, ForgotPassword.route),
+                  ),
+                ),
             SizedBox(height: 16)
           ],
         ),
