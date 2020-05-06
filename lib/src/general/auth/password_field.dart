@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:oneword/src/state/user.dart';
+
+const MIN_PASSWORD_LENGTH = 8;
 
 class PasswordField extends HookWidget {
   final TextEditingController controller;
@@ -10,7 +11,6 @@ class PasswordField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final obscureText = useState(false);
     final isValidating = useState(false);
 

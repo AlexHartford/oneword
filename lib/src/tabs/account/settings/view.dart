@@ -52,8 +52,8 @@ class Settings extends StatelessWidget {
           ),
           if (secured) ListCard(
             icon: Icons.person,
-            title: 'Username',
-            subtext: user.username
+            title: 'Email',
+            subtext: user.email
           ),
           if (secured) ListCard(
             icon: Icons.update,
@@ -62,10 +62,10 @@ class Settings extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, ChangePassword.route)
           ),
           if (secured) ListCard(
-            icon: Icons.question_answer,
-            title: 'Security Questions',
+            icon: Icons.input,
+            title: 'Sign Out',
             trailing: Icon(Icons.arrow_forward),
-            onTap: () => Navigator.pushNamed(context, SecurityQuestions.route)
+            onTap: () { user.signOut(); Navigator.pop(context); }
           ),
           TextDivider(text: 'About', align: TextAlign.Left),
           ListCard(

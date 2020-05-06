@@ -11,7 +11,6 @@ class EmailField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<UserState>(context);
 
     final unique = useState(true);
@@ -22,9 +21,11 @@ class EmailField extends HookWidget {
 
     _validator(String value) {
       if (value.isEmpty) return 'Please enter email';
-//      if (value.length < MIN_USERNAME_LENGTH) return 'Username too short';
-//      if (!RegExp(VALID_USERNAME_REGEX).hasMatch(value)) return 'Username cannot contain special characters';
+      if (!value.contains('.') || !value.contains('@')) return 'Invalid email';
+      if (!value.contains('@')) return 'Invalid email';
+
       _checkEmail(value);
+      if (unique.value == null) return 'Invalid email';
       if (!unique.value) return 'Email already in use';
       return null;
     }
@@ -35,7 +36,6 @@ class EmailField extends HookWidget {
         autofocus: true,
         controller: controller,
         validator: _validator,
-        autovalidate: false,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.email),
           labelText: 'Email',

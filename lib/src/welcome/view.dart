@@ -12,6 +12,8 @@ class Welcome extends StatelessWidget {
 
   Welcome({Key key}) : super(key: key);
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserState>(context);
@@ -29,7 +31,7 @@ class Welcome extends StatelessWidget {
                 RaisedButton(
                   onPressed: () => showModalBottomSheet(
                     context: context,
-                    builder: (_) => CreateEmail(),
+                    builder: (_) => CreateEmail(formKey: _formKey),
                     isScrollControlled: true,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(

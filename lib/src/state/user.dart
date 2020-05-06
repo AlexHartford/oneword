@@ -9,21 +9,17 @@ import 'package:oneword/src/state/preferences.dart';
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New, Deleted }
 enum Gender { Male, Female, Other }
 
-const MIN_USERNAME_LENGTH = 3;
-const MIN_PASSWORD_LENGTH = 8;
-const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\-_]+$';
-
 class UserState with ChangeNotifier {
 
   FirebaseAuth _auth;
   FirebaseUser _user;
 
-  Preferences _prefs;
+  Preferences _prefs; // Local device preferences
 
-  String uid;
-  String did;
-  String displayName;
-  String username;
+  String uid; // Unique user ID
+  String did; // Device ID
+  String displayName; // Name to show on posts
+  String email;
   Gender gender;
   bool banned;
   String bannedUntilDate;
@@ -48,7 +44,7 @@ class UserState with ChangeNotifier {
 
   Preferences get prefs => _prefs;
 
-  notify() {
+  void notify() {
     notifyListeners();
   }
 
@@ -103,19 +99,27 @@ class UserState with ChangeNotifier {
     }
   }
 
-  String convertUsername(String username) => '$username@doeapp.io';
-  String convertEmail(String email) => email.substring(0, email.indexOf('@'));
-
-  Future<bool> checkEmail(String email) async =>
-      (await _auth.fetchSignInMethodsForEmail(email: email)).isEmpty;
+  Future<bool> checkEmail(String email) async {
+    try {
+      return (await _auth.fetchSignInMethodsForEmail(email: email)).isEmpty;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   Future<bool> update() async {
     // Updates like added posts, security questions
     return true;
   }
 
+  Future<void> signOut() async {
+    await _auth.signOut();
+    _status = Status.New;
+    notifyListeners();
+  }
+
   Future<bool> createWithEmail(String email, String password) async {
-    print(email);
     try {
       AuthResult res = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       _user = res.user;
@@ -130,13 +134,12 @@ class UserState with ChangeNotifier {
     }
   }
 
-  Future<bool> convert(String username, String password) async {
-    String email = convertUsername(username);
+  Future<bool> convert(String email, String password) async {
     try {
       AuthCredential cred = EmailAuthProvider.getCredential(email: email, password: password);
       AuthResult res = await _user.linkWithCredential(cred);
       _user = res.user;
-      this.username = username;
+      this.email = email;
       this.karma += 100;
       _status = Status.Authenticated;
       notifyListeners();
@@ -228,13 +231,9 @@ class UserState with ChangeNotifier {
 
     if (success) {
       print('Got metadata');
-      try {
-        if (!_user.isAnonymous) username = convertEmail(_user.email);
-      } catch (e) {
-        print(e);
-      }
       uid = _user.uid;
       did = await _getUniqueId();
+      email = _user.email;
       displayName = 'Spunky Rat';
       karma = 100;
       reputation = 5;
