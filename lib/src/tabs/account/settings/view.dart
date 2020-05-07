@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+
+import 'package:oneword/src/state/user.dart';
+
 import 'package:oneword/src/general/list_card.dart';
 import 'package:oneword/src/tabs/account/delete/delete_dialog.dart';
 import 'package:oneword/src/tabs/account/delete/view.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
-import 'package:oneword/src/tabs/account/settings/change_password.dart';
-import 'package:oneword/src/tabs/account/settings/security_questions.dart';
-import 'package:provider/provider.dart';
-
-import 'package:oneword/src/state/user.dart';
-
 import 'package:oneword/src/general/text_divider.dart';
 import 'package:oneword/src/tos.dart';
 import 'package:oneword/src/welcome/view.dart';
@@ -19,6 +17,8 @@ class Settings extends StatelessWidget {
   static const route = '/settings';
 
   Settings({Key key}) : super(key: key);
+
+  final _key = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,22 @@ class Settings extends StatelessWidget {
         builder: (_) => DeleteDialog()
     );
 
+    _showForgotPasswordSnackBar(bool success) {
+      String text = success
+          ?
+          'Password reset instructions have been sent to your email.'
+          :
+          'Failed to send password reset instructions. Please try again later.';
+      _key.currentState.showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(text),
+        )
+      );
+    }
+
     return Scaffold(
+      key: _key,
       appBar: AppBar(title: Text('Settings')),
       body: ListView(
         children: [
@@ -52,20 +67,21 @@ class Settings extends StatelessWidget {
           ),
           if (secured) ListCard(
             icon: Icons.person,
-            title: 'Username',
-            subtext: user.username
+            title: 'Email',
+            subtext: user.email
           ),
           if (secured) ListCard(
             icon: Icons.update,
-            title: 'Change Password',
+            title: 'Reset Password',
             trailing: Icon(Icons.arrow_forward),
-            onTap: () => Navigator.pushNamed(context, ChangePassword.route)
+            onTap: () async =>
+              _showForgotPasswordSnackBar(await user.forgotPassword(user.email))
           ),
           if (secured) ListCard(
-            icon: Icons.question_answer,
-            title: 'Security Questions',
+            icon: Icons.input,
+            title: 'Sign Out',
             trailing: Icon(Icons.arrow_forward),
-            onTap: () => Navigator.pushNamed(context, SecurityQuestions.route)
+            onTap: () { user.signOut(); Navigator.pop(context); }
           ),
           TextDivider(text: 'About', align: TextAlign.Left),
           ListCard(

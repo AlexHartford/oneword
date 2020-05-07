@@ -59,7 +59,7 @@ class CustomBottomNav extends StatelessWidget {
           ),
           PostNavItem(),
           CustomNavItem(
-            icon: Icon(Icons.message),
+            icon: Icon(Icons.forum),
             onPressed: () => tab.value = Tab.Message,
             selected: tab.value == Tab.Message,
           ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/welcome/create_email.dart';
+import 'package:oneword/src/welcome/sign_in.dart';
 import 'package:provider/provider.dart';
 
 import 'package:oneword/src/state/user.dart';
@@ -10,6 +12,8 @@ class Welcome extends StatelessWidget {
   static const route = '/welcome';
 
   Welcome({Key key}) : super(key: key);
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,34 @@ class Welcome extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 RaisedButton(
-                  onPressed: () => user.create(),
-                  child: Text('Join Now'),
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (_) => SignIn(formKey: _formKey),
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(25.0)
+                        )
+                    ),
+                  ),
+                  child: Text('Sign in'),
+                ),
+                RaisedButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (_) => CreateEmail(formKey: _formKey),
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0)
+                      )
+                    ),
+                  ),
+                  child: Text('Create account'),
+                ),
+                OutlineButton(
+                  onPressed: () => user.signInAsGuest(),
+                  child: Text('Continue as guest'),
                 ),
                 Text(
                   'By proceeding you agree to the\nTerms of Service and Privacy Policy',

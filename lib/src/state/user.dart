@@ -9,24 +9,22 @@ import 'package:oneword/src/state/preferences.dart';
 enum Status { Uninitialized, Authenticated, Authenticating, Error, New, Deleted }
 enum Gender { Male, Female, Other }
 
-const MIN_USERNAME_LENGTH = 3;
-const MIN_PASSWORD_LENGTH = 8;
-const VALID_USERNAME_REGEX = r'^[a-zA-Z0-9\-_]+$';
-
 class UserState with ChangeNotifier {
 
   FirebaseAuth _auth;
   FirebaseUser _user;
 
-  Preferences _prefs;
+  Preferences _prefs; // Local device preferences
 
-  String uid;
-  String did;
-  String displayName;
-  String username;
+  String uid; // Unique user ID
+  String did; // Device ID
+  String displayName; // Name to show on posts
   Gender gender;
   bool banned;
   String bannedUntilDate;
+
+  List blockedUsers;
+  List reportedUsers;
 
   int karma;
   int reputation;
@@ -34,6 +32,8 @@ class UserState with ChangeNotifier {
   int numPosts;
   int numComments;
   int numVotes;
+
+  String get email => _user.email;
 
   Map<String, Direction> _votes;
 
@@ -45,7 +45,7 @@ class UserState with ChangeNotifier {
 
   Preferences get prefs => _prefs;
 
-  notify() {
+  void notify() {
     notifyListeners();
   }
 
@@ -56,6 +56,8 @@ class UserState with ChangeNotifier {
     _auth = FirebaseAuth.instance;
     _prefs = Preferences();
     _votes = Map();
+    blockedUsers = [];
+    reportedUsers = [];
     try {
       retrieve();
     } catch (e) {
@@ -81,8 +83,16 @@ class UserState with ChangeNotifier {
     }
   }
 
-  // TODO: Check if DeviceID exists on a banned account
-  Future<void> create() async {
+  Future<bool> checkEmail(String email) async {
+    try {
+      return (await _auth.fetchSignInMethodsForEmail(email: email)).isEmpty;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<void> signInAsGuest() async {
     if (_user != null) return await _getMetadata();
     _status = Status.Authenticating;
     notifyListeners();
@@ -98,28 +108,50 @@ class UserState with ChangeNotifier {
     }
   }
 
-  String convertUsername(String username) => '$username@doeapp.io';
-  String convertEmail(String email) => email.substring(0, email.indexOf('@'));
-
-  Future<bool> checkUsername(String username) async =>
-      (await _auth.fetchSignInMethodsForEmail(email: convertUsername(username))).isEmpty;
-
-  Future<bool> update() async {
-    // Updates like added posts, security questions
-    return true;
+  Future<bool> signInWithEmail(String email, String password) async {
+    try {
+      AuthResult res = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      _user = res.user;
+      await _getMetadata();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
-  Future<bool> convert(String username, String password) async {
-    String email = convertUsername(username);
+  Future<void> signOut() async {
+    await _auth.signOut();
+    _user = null;
+    _status = Status.New;
+    notifyListeners();
+  }
+
+  Future<bool> createWithEmail(String email, String password) async {
+    try {
+      AuthResult res = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      _user = res.user;
+      _user.sendEmailVerification();
+      await _getMetadata();
+      _status = Status.Authenticated;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> convert(String email, String password) async {
     try {
       AuthCredential cred = EmailAuthProvider.getCredential(email: email, password: password);
       AuthResult res = await _user.linkWithCredential(cred);
       _user = res.user;
-      this.username = username;
+      _user.sendEmailVerification();
       this.karma += 100;
       _status = Status.Authenticated;
       notifyListeners();
-      update();
+      await _setMetadata();
       return true;
     } catch (e) {
       print(e);
@@ -171,31 +203,27 @@ class UserState with ChangeNotifier {
     _status = Status.Deleted;
     notifyListeners();
   }
-
-  Future<Map<bool, String>> changePassword(String currentPass, String newPass) async {
+  
+  Future<bool> forgotPassword(String email) async {
     try {
-      AuthCredential cred = EmailAuthProvider.getCredential(email: _user.email, password: currentPass);
-      AuthResult res = await _user.reauthenticateWithCredential(cred);
-      _user = res.user;
-      _user.updatePassword(newPass);
-      return { true: 'Successfully updated password!' };
+      await _auth.sendPasswordResetEmail(email: email);
+      return true;
     } catch (e) {
       print(e);
-      if (e.toString().contains('TOO_MANY_REQUESTS')) {
-        return { false: 'Too many failed attempts.\nTry again later.' };
-      } else if (e.toString().contains('The password is invalid or the user does not have a password')) {
-        return { false: 'Current password is incorrect.' };
-      } else {
-        return { false: 'Please try again later.'};
-      }
+      return false;
     }
   }
 
   Future<void> ban() async {
     this.banned = true;
     this.bannedUntilDate = '05-10-2020';
-    // Update user
+    await _setMetadata();
     notifyListeners();
+  }
+
+  Future<bool> _setMetadata() async {
+    // Updates like added posts, security questions
+    return true;
   }
 
   Future<void> _getMetadata() async {
@@ -207,11 +235,6 @@ class UserState with ChangeNotifier {
 
     if (success) {
       print('Got metadata');
-      try {
-        if (!_user.isAnonymous) username = convertEmail(_user.email);
-      } catch (e) {
-        print(e);
-      }
       uid = _user.uid;
       did = await _getUniqueId();
       displayName = 'Spunky Rat';

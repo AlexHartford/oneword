@@ -4,9 +4,9 @@ import 'package:oneword/app_text.dart';
 import 'package:oneword/src/tabs/account/finalize/text_section.dart';
 import 'package:provider/provider.dart';
 
-import 'package:oneword/src/tabs/account/finalize/submit_button.dart';
-import 'package:oneword/src/tabs/account/finalize/password.dart';
-import 'package:oneword/src/tabs/account/finalize/username.dart';
+import 'package:oneword/src/general/auth/submit_button.dart';
+import 'package:oneword/src/general/auth/password_field.dart';
+import 'package:oneword/src/general/auth/email_field.dart';
 
 import 'package:oneword/src/state/user.dart';
 
@@ -22,7 +22,7 @@ class Finalize extends HookWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserState>(context);
 
-    final _usernameController = useTextEditingController();
+    final _emailController = useTextEditingController();
     final _passwordController = useTextEditingController();
 
     final loading = useState(false);
@@ -30,7 +30,7 @@ class Finalize extends HookWidget {
     _convert() async {
       if (!_formKey.currentState.validate()) return;
       loading.value = true;
-      bool success = await user.convert(_usernameController.text, _passwordController.text);
+      bool success = await user.convert(_emailController.text, _passwordController.text);
       loading.value = false;
       success
         ? _key.currentState.showSnackBar(
@@ -63,7 +63,7 @@ class Finalize extends HookWidget {
             shrinkWrap: false,
             children: <Widget>[
               TextSection(text: SECURE_ACCOUNT_DIALOG_TEXT),
-              UsernameField(controller: _usernameController, checkUsername: user.checkUsername),
+              EmailField(controller: _emailController),
               PasswordField(controller: _passwordController),
               SubmitButton(submit: _convert, loading: loading.value, text: 'Finalize')
             ],

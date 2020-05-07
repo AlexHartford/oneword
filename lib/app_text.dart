@@ -14,7 +14,7 @@ final SECURE_ACCOUNT_DIALOG_TEXT = RichText(
             'To preserve anonymity, Doe keeps user accounts very lightweight.\n\n'),
       TextSpan(
         text:
-            'In the event you uninstall the app or something happens to your device, your account will be permanently lost - unless you secure your account.\n\n',
+            'In the event you uninstall the app or something happens to your device, your account will be permanently lost - unless you finalize your account.\n\n',
         style: TextStyle(fontWeight: FontWeight.bold)),
       TextSpan(text: 'This is done by creating a username and password.  '),
       TextSpan(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:oneword/src/general/auth/forgot_password.dart';
 import 'package:oneword/src/tabs/account/delete/view.dart';
 import 'package:oneword/src/tabs/account/finalize/view.dart';
 import 'package:oneword/src/tabs/account/settings/acknowledgements.dart';
-import 'package:oneword/src/tabs/account/settings/change_password.dart';
-import 'package:oneword/src/tabs/account/settings/security_questions.dart';
 import 'package:oneword/src/tabs/account/settings/view.dart';
 import 'package:oneword/src/tabs/feed/view.dart';
 import 'package:oneword/src/landing.dart';
@@ -25,12 +24,11 @@ class Router {
         return MaterialPageRoute(builder: (_) => Settings());
       case Acknowledgements.route:
         return MaterialPageRoute(builder: (_) => Acknowledgements());
-      case SecurityQuestions.route:
-        return MaterialPageRoute(builder: (_) => SecurityQuestions());
-      case ChangePassword.route:
-        return MaterialPageRoute(builder: (_) => ChangePassword());
+      case ForgotPassword.route:
+        return MaterialPageRoute(builder: (_) => ForgotPassword());
       case DeleteAccount.route:
         return MaterialPageRoute(builder: (_) => DeleteAccount());
+
       default:
         // TODO: Log this in some more meaningful way
         print('\n\n*****\nBAD ROUTE\n*****\n\n');
