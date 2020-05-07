@@ -147,10 +147,11 @@ class UserState with ChangeNotifier {
       AuthCredential cred = EmailAuthProvider.getCredential(email: email, password: password);
       AuthResult res = await _user.linkWithCredential(cred);
       _user = res.user;
+      _user.sendEmailVerification();
       this.karma += 100;
       _status = Status.Authenticated;
       notifyListeners();
-      _setMetadata();
+      await _setMetadata();
       return true;
     } catch (e) {
       print(e);
@@ -216,7 +217,7 @@ class UserState with ChangeNotifier {
   Future<void> ban() async {
     this.banned = true;
     this.bannedUntilDate = '05-10-2020';
-    _setMetadata();
+    await _setMetadata();
     notifyListeners();
   }
 
