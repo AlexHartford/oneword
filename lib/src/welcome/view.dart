@@ -56,7 +56,7 @@ class Welcome extends StatelessWidget {
                   child: Text('Create account'),
                 ),
                 OutlineButton(
-                  onPressed: () => user.create(),
+                  onPressed: () => user.signInAsGuest(),
                   child: Text('Continue as guest'),
                 ),
                 Text(

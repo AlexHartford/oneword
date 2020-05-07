@@ -83,8 +83,16 @@ class UserState with ChangeNotifier {
     }
   }
 
-  // TODO: Check if DeviceID exists on a banned account
-  Future<void> create() async {
+  Future<bool> checkEmail(String email) async {
+    try {
+      return (await _auth.fetchSignInMethodsForEmail(email: email)).isEmpty;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<void> signInAsGuest() async {
     if (_user != null) return await _getMetadata();
     _status = Status.Authenticating;
     notifyListeners();
@@ -98,20 +106,6 @@ class UserState with ChangeNotifier {
     } else {
       await _getMetadata();
     }
-  }
-
-  Future<bool> checkEmail(String email) async {
-    try {
-      return (await _auth.fetchSignInMethodsForEmail(email: email)).isEmpty;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
-  Future<bool> update() async {
-    // Updates like added posts, security questions
-    return true;
   }
 
   Future<bool> signInWithEmail(String email, String password) async {
@@ -128,6 +122,7 @@ class UserState with ChangeNotifier {
 
   Future<void> signOut() async {
     await _auth.signOut();
+    _user = null;
     _status = Status.New;
     notifyListeners();
   }
@@ -155,7 +150,7 @@ class UserState with ChangeNotifier {
       this.karma += 100;
       _status = Status.Authenticated;
       notifyListeners();
-      update();
+      _setMetadata();
       return true;
     } catch (e) {
       print(e);
@@ -218,30 +213,16 @@ class UserState with ChangeNotifier {
     }
   }
 
-  Future<Map<bool, String>> changePassword(String currentPass, String newPass) async {
-    try {
-      AuthCredential cred = EmailAuthProvider.getCredential(email: _user.email, password: currentPass);
-      AuthResult res = await _user.reauthenticateWithCredential(cred);
-      _user = res.user;
-      _user.updatePassword(newPass);
-      return { true: 'Successfully updated password!' };
-    } catch (e) {
-      print(e);
-      if (e.toString().contains('TOO_MANY_REQUESTS')) {
-        return { false: 'Too many failed attempts.\nTry again later.' };
-      } else if (e.toString().contains('The password is invalid or the user does not have a password')) {
-        return { false: 'Current password is incorrect.' };
-      } else {
-        return { false: 'Please try again later.'};
-      }
-    }
-  }
-
   Future<void> ban() async {
     this.banned = true;
     this.bannedUntilDate = '05-10-2020';
-    // Update user
+    _setMetadata();
     notifyListeners();
+  }
+
+  Future<bool> _setMetadata() async {
+    // Updates like added posts, security questions
+    return true;
   }
 
   Future<void> _getMetadata() async {
