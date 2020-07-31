@@ -2,6 +2,10 @@
 
 Anonymous Social Media
 
+Demo:
+
+![Demo GIF](https://media.giphy.com/media/IfsxIXGA04gu1CKkbS/giphy.gif)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
